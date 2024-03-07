@@ -1,4 +1,4 @@
-public class LSstate {
+public class LSState {
 
 
   
@@ -9,7 +9,7 @@ public class LSstate {
    * 
    * @param [in]
    */
-  public LSstate() {
+  public LSState() {
 
   }
   
