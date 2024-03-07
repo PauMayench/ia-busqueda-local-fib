@@ -1,3 +1,8 @@
+package IA.probTSP;
+
+//~--- non-JDK imports --------------------------------------------------------
+
+
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 

@@ -1,3 +1,5 @@
+package IA.probTSP;
+
 import aima.search.framework.HeuristicFunction;
 
 public class ProbTSPHeuristicFunction implements HeuristicFunction  {

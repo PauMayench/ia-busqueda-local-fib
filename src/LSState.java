@@ -4,14 +4,6 @@ import IA.DistFS.Servers;
 public class LSState {
 
 
-  
-
-  /*!\brief Genera una instancia del problema
-   *
-   * Crea una nueva instancia del problema
-   * 
-   * @param [in]
-   */
 
   private static Requests requests;
   private static Servers servers;
@@ -23,6 +15,7 @@ public class LSState {
     requests = req;
     servers = serv;
   }
+
 
   //Crea solució incial Greedy temps total mínim.
   public LSState() {
@@ -47,6 +40,7 @@ public class LSState {
       totalTimeServers[minServer] += minTime; //Afegim al total del servidor el temps de la nova request.
     }
   }
+
 }
 
 
