@@ -1,6 +1,4 @@
-import java.util.Random;
-
-public class Board {
+public class LSstate {
 
 
   
@@ -11,9 +9,8 @@ public class Board {
    * 
    * @param [in]
    */
-  public Board() {
+  public LSstate() {
 
- 
   }
   
 
