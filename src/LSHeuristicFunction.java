@@ -1,6 +1,6 @@
 import aima.search.framework.HeuristicFunction;
 
-public class ProbTSPHeuristicFunction implements HeuristicFunction  {
+public class LSHeuristicFunction implements HeuristicFunction  {
 
   public boolean equals(Object obj) {
       boolean retValue;
