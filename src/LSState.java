@@ -1,6 +1,8 @@
 import IA.DistFS.Requests;
 import IA.DistFS.Servers;
 
+import java.util.Random;
+
 public class LSState {
 
 
@@ -40,6 +42,24 @@ public class LSState {
       totalTimeServers[minServer] += minTime; //Afegim al total del servidor el temps de la nova request.
     }
   }
+
+  //Generació full Random de la solució inicial (pot ser una solució molt dolenta).
+  public LSState(long seed) {
+    Random random = new Random(seed);
+    int numServers = servers.size();
+    int numRequests = requests.size();
+    totalTimeServers = new int[numServers];
+    serverRequests = new int[numRequests];
+    for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
+    for (int i = 0; i < numRequests; ++i) {
+      int randomServer = (random.nextInt()) % numServers;
+      int userId = requests.getRequest(i)[0];
+      int RandServTime = servers.tranmissionTime(randomServer, userId);
+      serverRequests[i] = randomServer;
+      totalTimeServers[randomServer] += RandServTime;
+    }
+  }
+  
 
   // Operadors:
 
