@@ -43,7 +43,7 @@ public class LSState {
     }
   }
 
-  //Generació full Random de la solució inicial (pot ser una solució molt dolenta).
+  //Generació full Random de la solució inicial (pot generar una solució molt dolenta).
   public LSState(long seed) {
     Random random = new Random(seed);
     int numServers = servers.size();
@@ -59,7 +59,20 @@ public class LSState {
       totalTimeServers[randomServer] += RandServTime;
     }
   }
-  
+
+  //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
+  public LSState (int[] actualTotalTimeServers, int[] actualServerRequests) {
+    totalTimeServers = actualTotalTimeServers;
+    serverRequests = actualServerRequests;
+  }
+
+  //Getters
+  public int[] getTotalTimeServers() {return totalTimeServers;}
+  public int[] getServerRequests() {return serverRequests;}
+
+  public LSState copyState() {
+    LSState newState = new LSState();
+  }
 
   // Operadors:
 
