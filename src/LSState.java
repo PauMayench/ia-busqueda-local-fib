@@ -41,6 +41,22 @@ public class LSState {
     }
   }
 
+  // Operadors:
+
+
+  // totalTimeServers: vector amb cada pos el temps ple del servidor
+  // serverRequests: index es els index dels requests i el valor el index del servidor
+  // input index dels paquets
+  // retorna boolean si pot fer el swap
+  public boolean swap(int orig, int dest) {
+      // comprobar que es pot fer el swap (no amb mateix servidor)
+
+      // fer swap
+
+  }
+
+  // move
+
 }
 
 
