@@ -12,43 +12,19 @@ import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
 
-public class ProbTSPDemo {
+public class Board {
     
     public static void main(String[] args){
-        ProbTSPBoard TSPB=new ProbTSPBoard(30);
-        TSPHillClimbingSearch(TSPB);
-        TSPSimulatedAnnealingSearch(TSPB);
+
+
     }
     
-    private static void TSPHillClimbingSearch(ProbTSPBoard TSPB) {
-        System.out.println("\nTSP HillClimbing  -->");
-        try {
-            Problem problem =  new Problem(TSPB,new ProbTSPSuccessorFunction(), new ProbTSPGoalTest(),new ProbTSPHeuristicFunction());
-            Search search =  new HillClimbingSearch();
-            SearchAgent agent = new SearchAgent(problem,search);
-            
-            System.out.println();
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static void HillClimbingSearch(ProbTSPBoard TSPB) {
+
     }
     
-    private static void TSPSimulatedAnnealingSearch(ProbTSPBoard TSPB) {
-        System.out.println("\nTSP Simulated Annealing  -->");
-        try {
-            Problem problem =  new Problem(TSPB,new ProbTSPSuccessorFunctionSA(), new ProbTSPGoalTest(),new ProbTSPHeuristicFunction());
-            SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(2000,100,5,0.001);
-            //search.traceOn();
-            SearchAgent agent = new SearchAgent(problem,search);
-            
-            System.out.println();
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static void SimulatedAnnealingSearch(ProbTSPBoard TSPB) {
+
     }
     
     private static void printInstrumentation(Properties properties) {
@@ -58,7 +34,7 @@ public class ProbTSPDemo {
             String property = properties.getProperty(key);
             System.out.println(key + " : " + property);
         }
-        
+
     }
     
     private static void printActions(List actions) {
@@ -67,8 +43,6 @@ public class ProbTSPDemo {
             System.out.println(action);
         }
     }
-    
-    
 }
 
 
