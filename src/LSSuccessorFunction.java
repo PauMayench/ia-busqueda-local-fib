@@ -9,11 +9,7 @@ public class LSSuccessorFunction implements SuccessorFunction {
     @SuppressWarnings("unchecked")
     public List getSuccessors(Object aState) {
         ArrayList                retVal = new ArrayList();
-        Board             board  = (ProbTSPBoard) aState;
-        HeuristicFunction TSPHF  = new HeuristicFunction();
-
-
-
+        
         return retVal;
     }
 }
