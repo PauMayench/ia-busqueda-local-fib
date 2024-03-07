@@ -12,7 +12,7 @@ import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
 
-public class Board {
+public class Main {
     
     public static void main(String[] args){
 
