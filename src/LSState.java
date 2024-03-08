@@ -5,12 +5,11 @@ import java.util.Random;
 
 public class LSState {
 
-
-
   private static Requests requests;
   private static Servers servers;
-  private int [] totalTimeServers;
-  private int [] serverRequests;
+  private int [] totalTimeServers;  // vector amb cada pos el temps ple del servidor
+  private int [] serverRequests;    // index del vector son els index dels requests i el valor el index del servidor
+
 
   //Inicialitza
   public static void InitializeStatic(Requests req, Servers serv) {
@@ -74,21 +73,65 @@ public class LSState {
     LSState newState = new LSState();
   }
 
-  // Operadors:
+
+    // Operadors:
+
+    // Operador de swap entre dos peticions (fitxers)
+    // Input: dos index del les dos peticions a intercanviar
+    // Output: boolean de si ha pogut fer el swap, en cas que pugui fa el swap
+    public boolean swap(int id_req1, int id_req2) {
+        // comprobar que es pot fer el swap (no amb mateix servidor)
+        if (serverRequests[id_req1] == serverRequests[id_req2]) { // estan al mateix server
+            return false;
+        }
+
+        // Intentar fer swap amb ell mateix
+        if (id_req1 == id_req2) return false;    // potser no faria falta
 
 
-  // totalTimeServers: vector amb cada pos el temps ple del servidor
-  // serverRequests: index es els index dels requests i el valor el index del servidor
-  // input index dels paquets
-  // retorna boolean si pot fer el swap
-  public boolean swap(int orig, int dest) {
-      // comprobar que es pot fer el swap (no amb mateix servidor)
+        // fer swap
+        int serv2_temp = serverRequests[id_req2];
+        serverRequests[id_req2] = serverRequests[id_req1];  // request 2 te el server del req 1
+        serverRequests[id_req1] = serv2_temp;
 
-      // fer swap
+        // actualitzar temps totals a totalTimeServers
 
-  }
+        // temps double? (esta en milisegons)
+        int time_req1 = getRequestTime(id_req1);    // TODO: getter del temps que tarda el request individual
+        int time_req2 = getRequestTime(id_req2);
 
-  // move
+        // diferencia: surti positiva o negativa, es el que li hem de sumar al temps del segon server  (i al primer server restar)
+        // manera eficient de nomes fer un access al vector
+        int diferencia_temps = time_req1 - time_req2;
+
+        totalTimeServers[id_req2] += diferencia_temps;
+        totalTimeServers[id_req1] -= diferencia_temps;
+
+        return true;
+    }
+
+    // Operador per moure un request a un altre servidor
+    // Input: index request  index servidor
+    // Output: boolean de si ha pogut fer el move, en cas que pugui el mou
+    public boolean move(int id_req, int id_serv) {
+        // comprobar que es pot moure (no al mateix servidor que es troba)
+        if (serverRequests[id_req] == id_serv) {
+            return false;
+        }
+
+        // fer move
+        int id_serv_original = serverRequests[id_req];
+
+        serverRequests[id_req] = id_serv;  // request pasa a un nou servidor
+
+        // actualitzar temps
+        int time_req1 = getRequestTime(id_req);
+
+        totalTimeServers[id_serv_original] -= time_req1;  // treure el temps que ocupava el paquet al servidor original
+        totalTimeServers[id_serv] += time_req1;
+
+        return true;
+    }
 
 }
 
