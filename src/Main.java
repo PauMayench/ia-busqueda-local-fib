@@ -6,9 +6,14 @@ import IA.DistFS.Servers;
 import IA.DistFS.Requests;
 
 
+import IA.probTSP.ProbTSPGoalTest;
+import IA.probTSP.ProbTSPHeuristicFunction;
+import IA.probTSP.ProbTSPSuccessorFunction;
 import aima.search.framework.HeuristicFunction;
 import aima.search.framework.Problem;
+import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
+import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
 
@@ -72,7 +77,17 @@ public class Main {
     }
     
     private static void LSHillClimbingSearch(LSState initial_state) {
+        try {
+            Problem problem =  new Problem(initial_state, new LSSuccessorFunction(), new LSGoalTest(),new heuristicFunction());
+            Search search =  new HillClimbingSearch();
+            SearchAgent agent = new SearchAgent(problem,search);
 
+            System.out.println();
+            printActions(agent.getActions());
+            printInstrumentation(agent.getInstrumentation());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private static void printInstrumentation(Properties properties) {
