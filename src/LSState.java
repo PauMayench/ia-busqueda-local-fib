@@ -69,6 +69,11 @@ public class LSState {
   public int[] getTotalTimeServers() {return totalTimeServers;}
   public int[] getServerRequests() {return serverRequests;}
 
+    public int getRequestTime(int idReq) {
+      int userId = requests.getRequest(idReq)[0];
+      int idServer = serverRequests[idReq];
+      return servers.tranmissionTime(idServer, userId);
+    }
   public LSState copyState() {
     LSState newState = new LSState();
   }
