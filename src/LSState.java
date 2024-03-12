@@ -7,14 +7,17 @@ public class LSState {
 
   private static Requests requests;
   private static Servers servers;
+
+  private static int min_replications_per_file;
   private int [] totalTimeServers;  // vector amb cada pos el temps ple del servidor
   private int [] serverRequests;    // index del vector son els index dels requests i el valor el index del servidor
 
 
   //Inicialitza
-  public static void InitializeStatic(Requests req, Servers serv) {
+  public static void InitializeStatic(Requests req, Servers serv, int minRep) {
     requests = req;
     servers = serv;
+    min_replications_per_file = minRep;
   }
 
 
@@ -79,6 +82,8 @@ public class LSState {
     public int getNumRequests() {
       return requests.size();
     }
+
+    public int getMinReplicationsPerFile() {return min_replications_per_file;}
 
     public int getNumServers() {return servers.size();}
 
