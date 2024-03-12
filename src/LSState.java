@@ -80,6 +80,8 @@ public class LSState {
       return requests.size();
     }
 
+    public int getNumServers() {return servers.size();}
+
   public LSState copyState() {
     LSState newState = new LSState();
   }
