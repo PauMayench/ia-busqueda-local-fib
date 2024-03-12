@@ -69,11 +69,17 @@ public class LSState {
   public int[] getTotalTimeServers() {return totalTimeServers;}
   public int[] getServerRequests() {return serverRequests;}
 
+    //PRECAUCIÓ: El temps d'un request CANVIA ENTRE SERVIDORS (DEPÈN DEL SERVIDOR AL QUE FEM LA REQUEST).
     public int getRequestTime(int idReq) {
       int userId = requests.getRequest(idReq)[0];
       int idServer = serverRequests[idReq];
       return servers.tranmissionTime(idServer, userId);
     }
+
+    public int getNumRequests() {
+      return requests.size();
+    }
+
   public LSState copyState() {
     LSState newState = new LSState();
   }
