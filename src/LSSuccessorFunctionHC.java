@@ -21,13 +21,10 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
 
                 LSState newState = new LSState(state.getTotalTimeServers(), state.getServerRequests());
 
-                boolean swapFet = newState.swapRequest(r1, r2);
+                boolean swapFet = newState.swapRequests(r1, r2);
                 
                 if (swapFet) {
-                    double v = LSHF.getHeuristicValue(newState);
-                    String S = "Swap " + r1 + " " + r2 + " Cost(" + v + ")";
-
-                    retVal.add(new Successor(S, newState));
+                    retVal.add(new Successor("", newState));
                 }
             }
         }
@@ -45,10 +42,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                 boolean moveFet = newState2.moveRequest(r, s);   // moure paquet a un altre servidor
 
                 if (moveFet) {
-                    double v = LSHF.getHeuristicValue(newState2);
-                    String S = "Move " + r + " al server" + s + " Cost(" + v + ")";
-
-                    retVal.add(new Successor(S, newState2));
+                    retVal.add(new Successor("", newState2));
                 }
             }
         }
