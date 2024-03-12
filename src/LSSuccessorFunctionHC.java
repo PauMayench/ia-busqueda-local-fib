@@ -15,29 +15,41 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
 
         int numRequests = state.getNumRequests();
 
-        // per tots els requests
-        for (int i = 0; i < numRequests; i++) {
-            for (int j = 0; j < numRequests; j++) {  // o tambe? el tenir j = i + 1 al fer swaps evitem tractar el mateix request i simetrics
+        // per tots els requests    fer Swap
+        for (int r1 = 0; r1 < numRequests; r1++) {
+            for (int r2 = r1 + 1; r2 < numRequests; r2++) {  // j = i + 1 al fer swaps evitem tractar el mateix request i simetrics
 
-                // Swap
                 LSState newState = new LSState(state.getTotalTimeServers(), state.getServerRequests());
 
-                newState.swapRequest(i, j);
+                boolean swapFet = newState.swapRequest(r1, r2);
+                
+                if (swapFet) {
+                    double v = LSHF.getHeuristicValue(newState);
+                    String S = "Swap " + r1 + " " + r2 + " Cost(" + v + ")";
 
-                double v = LSHF.getHeuristicValue(newState);
-                String S = "Swap " + i + " " + j + " Cost(" + v + ")";
+                    retVal.add(new Successor(S, newState));
+                }
+            }
+        }
+        
+        int numServers = getNumServers();
 
-                retVal.add(new Successor(S, newState));
+        // per tots els requests      fer Move
+        for (int r = 0; r < numRequests; r++) {
+            
+            // per tots els servidors
+            for (int s = 0; s < numServers; s++) {
 
-                // Move
                 LState newState2 = new LSState(state.getTotalTimeServers(), state.getServerRequests());
 
-                newState2.moveRequest(i, );   // index del server  (altre bucle ?)
+                boolean moveFet = newState2.moveRequest(r, s);   // moure paquet a un altre servidor
 
-                double v = LSHF.getHeuristicValue(newState2);
-                String S = "Move " + i + " al server" + _______ + " Cost(" + v + ")";
+                if (moveFet) {
+                    double v = LSHF.getHeuristicValue(newState2);
+                    String S = "Move " + r + " al server" + s + " Cost(" + v + ")";
 
-                retVal.add(new Successor(S, newState2));
+                    retVal.add(new Successor(S, newState2));
+                }
             }
         }
 
