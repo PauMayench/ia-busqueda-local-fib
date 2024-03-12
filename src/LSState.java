@@ -104,7 +104,7 @@ public class LSState {
         }
 
         // Intentar fer swap amb ell mateix
-        //if (id_req1 == id_req2) return false;    // potser no faria falta
+        if (id_req1 == id_req2) return false;    // potser no faria falta
 
 
         // fer swap
