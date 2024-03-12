@@ -84,14 +84,14 @@ public class LSState {
     // Operador de swap entre dos peticions (fitxers)
     // Input: dos index del les dos peticions a intercanviar
     // Output: boolean de si ha pogut fer el swap, en cas que pugui fa el swap
-    public boolean swap(int id_req1, int id_req2) {
+    public boolean swapRequests(int id_req1, int id_req2) {
         // comprobar que es pot fer el swap (no amb mateix servidor)
         if (serverRequests[id_req1] == serverRequests[id_req2]) { // estan al mateix server
             return false;
         }
 
         // Intentar fer swap amb ell mateix
-        if (id_req1 == id_req2) return false;    // potser no faria falta
+        //if (id_req1 == id_req2) return false;    // potser no faria falta
 
 
         // fer swap
@@ -102,7 +102,7 @@ public class LSState {
         // actualitzar temps totals a totalTimeServers
 
         // temps double? (esta en milisegons)
-        int time_req1 = getRequestTime(id_req1);    // TODO: getter del temps que tarda el request individual
+        int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual
         int time_req2 = getRequestTime(id_req2);
 
         // diferencia: surti positiva o negativa, es el que li hem de sumar al temps del segon server  (i al primer server restar)
@@ -118,7 +118,7 @@ public class LSState {
     // Operador per moure un request a un altre servidor
     // Input: index request  index servidor
     // Output: boolean de si ha pogut fer el move, en cas que pugui el mou
-    public boolean move(int id_req, int id_serv) {
+    public boolean moveRequest(int id_req, int id_serv) {
         // comprobar que es pot moure (no al mateix servidor que es troba)
         if (serverRequests[id_req] == id_serv) {
             return false;

@@ -4,4 +4,4 @@ Josep: State, i constructora normal
 
 Pau: main, getSucessors SA
 
-Arnau: operadors, getSuccessors de HC
+Arnau: operadors [fet], getSuccessors de HC
