@@ -115,7 +115,7 @@ public class LSState {
         // actualitzar temps totals a totalTimeServers
 
         // temps double? (esta en milisegons)
-        int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual
+        int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
         int time_req2 = getRequestTime(id_req2);
 
         // diferencia: surti positiva o negativa, es el que li hem de sumar al temps del segon server  (i al primer server restar)
