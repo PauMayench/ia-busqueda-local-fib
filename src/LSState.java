@@ -91,6 +91,11 @@ public class LSState {
     LSState newState = new LSState();
   }
 
+  // donat el request i el server, retorna true, si el file del request es troba en el server
+  public boolean requestInServer(int request, int server) {
+
+  }
+
 
     // Operadors:
 
@@ -107,14 +112,30 @@ public class LSState {
         if (id_req1 == id_req2) return false;
 
 
+
         // fer swap
-        int serv2_temp = serverRequests[id_req2];
+        int serv1_original = serverRequests[id_req1];
+        int serv2_original = serverRequests[id_req2];
+
+
+        // TODO: enviar els dos req i servers alhora a la consultora, aixi nomes fa una consulta a tots els servers?
+
+        // comprobar que el file del primer request estigui al server que es vol fer el swap
+        if (!requestInServer(id_req1, serv2_original)) { // TODO: et passo request i server i em reotrna bool si el file del req hi es al server
+            return false;
+        }
+
+        // comprobar que el file del segon request, estigui al server del primer request
+        if(!requestInServer(id_req2, serv1_original)) {
+            return false;
+        }
+
         serverRequests[id_req2] = serverRequests[id_req1];  // request 2 te el server del req 1
-        serverRequests[id_req1] = serv2_temp;
+        serverRequests[id_req1] = serv2_original;
 
         // actualitzar temps totals a totalTimeServers
 
-        // temps double? (esta en milisegons)
+        // TODO: temps double? (esta en milisegons)
         int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
         int time_req2 = getRequestTime(id_req2);
 
@@ -134,6 +155,11 @@ public class LSState {
     public boolean moveRequest(int id_req, int id_serv) {
         // comprobar que es pot moure (no al mateix servidor que es troba)
         if (serverRequests[id_req] == id_serv) {
+            return false;
+        }
+
+        // comprobar que el server de desti tingui copia del file del request
+        if (!requestInServer(id_req, id_serv)) {
             return false;
         }
 
