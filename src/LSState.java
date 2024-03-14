@@ -91,6 +91,12 @@ public class LSState {
     LSState newState = new LSState();
   }
 
+
+  // donat un request que conte un file, retorna tots els servers, que tenen replicat el file
+  public int[] getServersOfRequest(int request) {
+
+  }
+
   // donat el request i el server, retorna true, si el file del request es troba en el server
   public boolean requestInServer(int request, int server) {
 
@@ -155,11 +161,6 @@ public class LSState {
     public boolean moveRequest(int id_req, int id_serv) {
         // comprobar que es pot moure (no al mateix servidor que es troba)
         if (serverRequests[id_req] == id_serv) {
-            return false;
-        }
-
-        // comprobar que el server de desti tingui copia del file del request
-        if (!requestInServer(id_req, id_serv)) {
             return false;
         }
 

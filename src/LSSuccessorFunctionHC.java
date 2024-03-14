@@ -37,7 +37,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
         // per tots els requests      fer Move
         for (int r = 0; r < numRequests; r++) {
 
-            int[] ServersDelRequest = getServersOfRequest();
+            int[] ServersDelRequest = getServersOfRequest(r);
             int numServers = ServersDelRequest.length;
 
             // per tots els servidors que tinguin copia del fitxer del request
