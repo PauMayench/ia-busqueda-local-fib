@@ -93,17 +93,15 @@ public class LSState {
   }
 
 
-    // donat un request que conte un file, retorna el vector amb tots els servers que tenen replicat el file
-    public int[] getServersOfRequest(int request) {
+    // donat un request que conte un file, retorna el set amb tots els servers que tenen replicat el file
+    public Set<Integer> getServersOfRequest(int request) {
         // obtenir el file
         int[] UsrFile = requests.getRequest(request);
         int file = UsrFile[1];
 
         Set<Integer> ServersOfFile = servers.fileLocations(file);  // conjunt amb tots els servers del file
 
-        // convertir set a vector (array)
-        int[] serversOfReq = ServersOfFile.toArray();
-        return serversOfReq;
+        return ServersOfFile;
     }
 
     // donat el request i el server, retorna true, si el file del request es troba en el server

@@ -1,6 +1,7 @@
 SRC_DIR := .
 OUT_DIR := ../EXE
-LIBS := ../lib/AIMA.jar
+LIB_DIR := ../lib
+LIBS := $(LIB_DIR)/AIMA.jar:$(LIB_DIR)/DistributedFS.jar
 
 
 all: compile

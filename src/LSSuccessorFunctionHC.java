@@ -37,13 +37,12 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
         // per tots els requests      fer Move
         for (int r = 0; r < numRequests; r++) {
 
-            int[] ServersDelRequest = getServersOfRequest(r);
-            int numServers = ServersDelRequest.length;
-
+            Set<Integer> ServersDelRequest = getServersOfRequest(r);
+         
             // per tots els servidors que tinguin copia del fitxer del request
-            for (int s = 0; s < numServers; s++) {
+            for (int s : serversDelRequest) {
 
-                LState newState2 = new LSState(state.getTotalTimeServers(), state.getServerRequests());
+                LSState newState2 = new LSState(state.getTotalTimeServers(), state.getServerRequests());
 
                 boolean moveFet = newState2.moveRequest(r, s);   // moure paquet a un altre servidor
 
