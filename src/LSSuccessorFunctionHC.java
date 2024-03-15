@@ -2,11 +2,12 @@ import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.List;
 
 
 public class LSSuccessorFunctionHC implements SuccessorFunction {
-
+    @SuppressWarnings("unchecked")
     public List getSuccessors(Object aState) {
 
         ArrayList retVal = new ArrayList();  // llista que contindra tots els successors
@@ -37,8 +38,8 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
         // per tots els requests      fer Move
         for (int r = 0; r < numRequests; r++) {
 
-            Set<Integer> ServersDelRequest = getServersOfRequest(r);
-         
+            Set<Integer> serversDelRequest = state.getServersOfRequest(r);
+
             // per tots els servidors que tinguin copia del fitxer del request
             for (int s : serversDelRequest) {
 
