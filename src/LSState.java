@@ -2,6 +2,7 @@ import IA.DistFS.Requests;
 import IA.DistFS.Servers;
 
 import java.util.Random;
+import java.util.Set;
 
 public class LSState {
 
@@ -92,15 +93,23 @@ public class LSState {
   }
 
 
-  // donat un request que conte un file, retorna tots els servers, que tenen replicat el file
-  public int[] getServersOfRequest(int request) {
+    // donat un request que conte un file, retorna el vector amb tots els servers que tenen replicat el file
+    public int[] getServersOfRequest(int request) {
+        // obtenir el file
+        int[] UsrFile = requests.getRequest(request);
+        int file = UsrFile[1];
 
-  }
+        Set<Integer> ServersOfFile = servers.fileLocations(file);  // conjunt amb tots els servers del file
 
-  // donat el request i el server, retorna true, si el file del request es troba en el server
-  public boolean requestInServer(int request, int server) {
+        // convertir set a vector (array)
+        int[] serversOfReq = ServersOfFile.toArray();
+        return serversOfReq;
+    }
 
-  }
+    // donat el request i el server, retorna true, si el file del request es troba en el server
+    public boolean requestInServer(int request, int server) {
+                return false;
+    }
 
 
     // Operadors:
@@ -116,8 +125,6 @@ public class LSState {
 
         // Intentar fer swap amb ell mateix
         if (id_req1 == id_req2) return false;
-
-
 
         // fer swap
         int serv1_original = serverRequests[id_req1];
