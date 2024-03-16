@@ -90,6 +90,7 @@ public class LSState {
 
   public LSState copyState() {
     LSState newState = new LSState();
+    return newState;
   }
 
 
