@@ -123,7 +123,7 @@ public class LSState {
         // Intentar fer swap amb ell mateix
         if (id_req1 == id_req2) return false;
 
-
+        // servidors originals
         int serv1_original = serverRequests[id_req1];
         int serv2_original = serverRequests[id_req2];
 
@@ -136,22 +136,26 @@ public class LSState {
             return false;
         }
 
+        // actualitzar temps totals a totalTimeServers, restar temps de treure el request
+
+        int time_req1Old = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
+        int time_req2Old = getRequestTime(id_req2);
+
+        totalTimeServers[id_req1] -= time_req1Old;
+        totalTimeServers[id_req2] -= time_req2Old;
+
         // fer swap
 
-        serverRequests[id_req2] = serverRequests[id_req1];  // request 2 te el server del req 1
+        serverRequests[id_req2] = serv1_original; // request 2 te el server del req 1
         serverRequests[id_req1] = serv2_original;
 
-        // actualitzar temps totals a totalTimeServers
+        // actualitzar temps totals a totalTimeServers, sumar els nous temps
 
-        int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
-        int time_req2 = getRequestTime(id_req2);
+        int time_req1New = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
+        int time_req2New = getRequestTime(id_req2);
 
-        // diferencia: surti positiva o negativa, es el que li hem de sumar al temps del segon server  (i al primer server restar)
-        // manera eficient de nomes fer un access al vector
-        int diferencia_temps = time_req1 - time_req2;
-
-        totalTimeServers[id_req2] += diferencia_temps;
-        totalTimeServers[id_req1] -= diferencia_temps;
+        totalTimeServers[id_req1] += time_req1New;
+        totalTimeServers[id_req2] += time_req2New;
 
         return true;
     }
@@ -166,16 +170,18 @@ public class LSState {
             return false;
         }
 
-        // fer move
         int id_serv_original = serverRequests[id_req];
+        // actualitzar temps, restar al treure'l d'alla
+        int time_reqServOrigin = getRequestTime(id_req);
+        totalTimeServers[id_serv_original] -= time_reqServOrigin;  // treure el temps que ocupava el paquet al servidor original
 
+        // fer move
         serverRequests[id_req] = id_serv;  // request pasa a un nou servidor
 
-        // actualitzar temps    // temps incorecte TODO
-        int time_req1 = getRequestTime(id_req);
+        // actualitzar temps, en el servidor desti
+        int time_reqServDestiny = getRequestTime(id_req);
 
-        totalTimeServers[id_serv_original] -= time_req1;  // treure el temps que ocupava el paquet al servidor original
-        totalTimeServers[id_serv] += time_req1;
+        totalTimeServers[id_serv] += time_reqServDestiny;
 
         return true;
     }
