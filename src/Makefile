@@ -10,7 +10,7 @@ compile: $(wildcard *.java)
 	javac -d $(OUT_DIR) -cp $(LIBS) $^
 
 run:
-	java -cp $(OUT_DIR) Main
+	java -cp $(OUT_DIR):$(LIBS) Main
 
 
 # Elimina todos los .class
