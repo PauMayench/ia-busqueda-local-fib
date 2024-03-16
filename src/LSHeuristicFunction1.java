@@ -1,6 +1,6 @@
 import aima.search.framework.HeuristicFunction;
 
-public class LSHeuristicFunction implements HeuristicFunction  {
+public class LSHeuristicFunction1 implements HeuristicFunction  {
 
   public double getHeuristicValue(Object state) {
 

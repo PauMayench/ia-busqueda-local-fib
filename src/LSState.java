@@ -143,7 +143,6 @@ public class LSState {
 
         // actualitzar temps totals a totalTimeServers
 
-        // TODO: temps double? (esta en milisegons)
         int time_req1 = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
         int time_req2 = getRequestTime(id_req2);
 
@@ -172,7 +171,7 @@ public class LSState {
 
         serverRequests[id_req] = id_serv;  // request pasa a un nou servidor
 
-        // actualitzar temps
+        // actualitzar temps    // temps incorecte TODO
         int time_req1 = getRequestTime(id_req);
 
         totalTimeServers[id_serv_original] -= time_req1;  // treure el temps que ocupava el paquet al servidor original
