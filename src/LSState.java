@@ -9,22 +9,22 @@ public class LSState {
   private static Requests requests;
   private static Servers servers;
 
-  private static int min_replications_per_file;
+  private static int numberOfServers;
   private int [] totalTimeServers;  // vector amb cada pos el temps ple del servidor
   private int [] serverRequests;    // index del vector son els index dels requests i el valor el index del servidor
 
 
   //Inicialitza
-  public static void InitializeStatic(Requests req, Servers serv, int minRep) {
+  public static void InitializeStatic(Requests req, Servers serv, int numServ) {
     requests = req;
     servers = serv;
-    min_replications_per_file = minRep;
+    numberOfServers = numServ;
   }
 
 
   //Crea solució incial Greedy temps total mínim.
   public LSState() {
-    int numServers = servers.size();
+    int numServers = numberOfServers;
     int numRequests = requests.size();
     totalTimeServers = new int[numServers];
     serverRequests = new int[numRequests];
@@ -49,7 +49,7 @@ public class LSState {
   //Generació full Random de la solució inicial (pot generar una solució molt dolenta).
   public LSState(long seed) {
     Random random = new Random(seed);
-    int numServers = servers.size();
+    int numServers = numberOfServers;
     int numRequests = requests.size();
     totalTimeServers = new int[numServers];
     serverRequests = new int[numRequests];
@@ -84,9 +84,8 @@ public class LSState {
       return requests.size();
     }
 
-    public int getMinReplicationsPerFile() {return min_replications_per_file;}
 
-    public int getNumServers() {return servers.size();}
+    public int getNumServers() {return totalTimeServers.length;}
 
   public LSState copyState() {
     LSState newState = new LSState();
@@ -142,8 +141,8 @@ public class LSState {
         int time_req1Old = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
         int time_req2Old = getRequestTime(id_req2);
 
-        totalTimeServers[id_req1] -= time_req1Old;
-        totalTimeServers[id_req2] -= time_req2Old;
+        totalTimeServers[serv1_original] -= time_req1Old;
+        totalTimeServers[serv2_original] -= time_req2Old;
 
         // fer swap
 
@@ -155,8 +154,8 @@ public class LSState {
         int time_req1New = getRequestTime(id_req1);  // temps que tarda el paquet individual,  passantli el paquet i el servidor
         int time_req2New = getRequestTime(id_req2);
 
-        totalTimeServers[id_req1] += time_req1New;
-        totalTimeServers[id_req2] += time_req2New;
+        totalTimeServers[serv2_original] += time_req1New;
+        totalTimeServers[serv1_original] += time_req2New;
 
         return true;
     }

@@ -12,7 +12,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
 
         ArrayList retVal = new ArrayList();  // llista que contindra tots els successors
         LSState state = (LSState) aState;
-        LSHeuristicFunction LSHF = new LSHeuristicFunction();
+        //LSHeuristicFunction LSHF = new LSHeuristicFunction();
 
         int numRequests = state.getNumRequests();
 

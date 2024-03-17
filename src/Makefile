@@ -16,3 +16,10 @@ run:
 # Elimina todos los .class
 clean:
 	find $(OUT_DIR) -name "*.class" -exec rm -rf {} +
+
+# Compila i executa
+
+x:
+	@$(MAKE) --no-print-directory compile
+	@echo ""
+	@$(MAKE) --no-print-directory run

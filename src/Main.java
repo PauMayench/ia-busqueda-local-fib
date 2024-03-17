@@ -1,14 +1,12 @@
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import IA.DistFS.Servers;
 import IA.DistFS.Requests;
 
 
-import IA.probTSP.ProbTSPGoalTest;
-import IA.probTSP.ProbTSPHeuristicFunction;
-import IA.probTSP.ProbTSPSuccessorFunction;
 import aima.search.framework.HeuristicFunction;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
@@ -16,46 +14,95 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
+/*
+*  Comprovar a cada experiment:
+*   - parametres generacio problema, seed
+*   - algorisme correcte
+*   - solucio inicial (amb seed o no)
+*   - heurisic correcte
+*   - parametres algorisme
+*   - prints activats
+*
+* */
 
 public class Main {
-    
-    public static void main(String[] args){
+    static String SimulatedAnnealing = "SA";
+    static String HillClimbing = "HC";
 
+    private static void generateProblem(int seed){
 
-        /*
-        LSState initial_state = createInitialState();
+        int number_of_users = 200;                  //200
+        int max_number_files_user_can_request = 5;  //5
+        int number_servers = 50;                    //50
+        int minimum_replications_per_file = 5;      //5
 
-        HeuristicFunction heuristic= new LSHeuristicFunction(); //podem fer que sigui una altre funcio
-
-        int steps = 2000;       // 2000
-        int stiter = 100;       // 100
-        int k = 5;              // 5
-        double lambd = 0.001;    // 0.001
-        LSSimulatedAnnealingSearch(initial_state, heuristic, steps,stiter,k, lambd);
-
-
-        */
-
-    }
-
-    private static LSState createInitialState(){
-
-        int number_of_users = 100;
-        int max_number_files_user_can_request = 10;
-        int number_servers = 20;
-        int minimum_replications_per_file = 7;
-        int seed = 10;
-
-        Requests requests = new Requests(number_of_users, max_number_files_user_can_request, seed);
         try {
+            Requests requests = new Requests(number_of_users, max_number_files_user_can_request, seed);
             Servers servers = new Servers(number_servers, minimum_replications_per_file, seed);
-            LSState.InitializeStatic(requests, servers);
+            LSState.InitializeStatic(requests, servers, number_servers);
         }
         catch(Exception e){
             System.out.println("error parametres");
         }
+    }
 
-        return new LSState();
+    public static void main(String[] args){
+
+        String algorithm = HillClimbing; //pot ser SimulatedAnnealing , HillClimbing o ""
+
+        int seed = 120; //seed dels generadors del problema
+        generateProblem(seed);
+
+
+        if (Objects.equals(algorithm, HillClimbing)){
+            // HILL CLIMBING ------------------------------------------------------------------------------------
+            print("HILL CLIMBING");
+
+
+            LSState initial_state = new LSState();
+            HeuristicFunction heuristic = new LSHeuristicFunction1();
+
+            LSHillClimbingSearch(initial_state, heuristic);
+
+            initial_state.printSolution();
+
+            print("end HILL CLIMBING");
+        }
+
+        if(Objects.equals(algorithm, SimulatedAnnealing)) {
+            // SIMULATED ANNEALING ------------------------------------------------------------------------------
+            print("SIMULATED ANNEALING");
+
+
+            LSState initial_state = new LSState();
+            HeuristicFunction heuristic = new LSHeuristicFunction1();
+            int steps = 2000;        // 2000
+            int stiter = 100;        // 100
+            int k = 5;               // 5
+            double lambd = 0.001;    // 0.001
+
+            LSSimulatedAnnealingSearch(initial_state, heuristic, steps, stiter, k, lambd);
+
+            initial_state.printSolution();
+
+            print("end SIMULATED ANNEALING");
+
+        }
+
+    }
+
+
+    private static void LSHillClimbingSearch(LSState initial_state, HeuristicFunction heuristicFunction) {
+        try {
+            Problem problem =  new Problem(initial_state, new LSSuccessorFunctionHC(), new LSGoalTest(), heuristicFunction);
+            Search search =  new HillClimbingSearch();
+            SearchAgent agent = new SearchAgent(problem,search);
+
+            System.out.println();
+        } catch (Exception e) {
+            System.out.println("error en hill climbing");
+            e.printStackTrace();
+        }
     }
 
     private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd) {
@@ -68,42 +115,18 @@ public class Main {
             //search.traceOn();
             SearchAgent agent = new SearchAgent(problem,search);
             System.out.println();
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
 
         } catch (Exception e) {
+            System.out.println("error en simulated annealing");
             e.printStackTrace();
         }
     }
-    
-    private static void LSHillClimbingSearch(LSState initial_state) {
-        try {
-            Problem problem =  new Problem(initial_state, new LSSuccessorFunction(), new LSGoalTest(),new heuristicFunction());
-            Search search =  new HillClimbingSearch();
-            SearchAgent agent = new SearchAgent(problem,search);
 
-            System.out.println();
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private static void printInstrumentation(Properties properties) {
-        Iterator keys = properties.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            String property = properties.getProperty(key);
-            System.out.println(key + " : " + property);
-        }
-
-    }
-    
-    private static void printActions(List actions) {
-        for (int i = 0; i < actions.size(); i++) {
-            String action = (String) actions.get(i);
-            System.out.println(action);
+    //fa un print si verbose es true
+    private static void print(String s){
+        boolean verbose = true;
+        if (verbose) {
+            System.out.println(s);
         }
     }
 }

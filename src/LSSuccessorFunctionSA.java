@@ -2,87 +2,89 @@
 
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
-
-import java.util.ArrayList;
-import java.util.List;
+import aima.util.Pair;
 import java.util.Random;
+
+import java.util.*;
 
 
 public class LSSuccessorFunctionSA implements SuccessorFunction {
-    public List getSuccessors(Object original_state) {
+    private static Random random;
 
-      original_state = (LSState) original_state;
-      ArrayList retVal = new ArrayList();
-      LSState new_state = new LSState(original_state.getTotalTimeServers(), original_state.getServerRequests());
-
-      
-
-      int nservers = original_state.getNServidors();
-      int nrequests = original_state.getNRequests();
-
-
-      double probabilityMove = probabilityMove(new_state);
-
-      double randomValue = Math.random(); // 0.0 <= randomValue < 1.0
-      if (probabilityMove <= randomValue){
-        //MOVE
-
-        while( !new_state.move(randomRandint(nrequests - 1), randomRandint(nservers - 1)));
-      } 
-      else{
-        //SWAP
-
-        while( !new_state.swap(randomRandint(nrequests - 1), randomRandint(nrequests - 1)));
-      }
-
-
-      retVal.add(new Successor("", new_state));
-      return retVal;
+    public LSSuccessorFunctionSA() {
+        random = new Random();
     }
-    private int randomRandint(int min, int max){  //includes min and max
-      return (int) (Math.random() * ((max - min) + 1)) + min; 
+
+    public LSSuccessorFunctionSA(long seed) {
+       random = new Random(seed);
     }
-    /*
-dades:
-  nservidors = nombre de servidors
-  nminim = nombre minim de servidors a la que un fitxer esta( estaria be tenir el nombre real)
 
+    public List getSuccessors(Object state){
 
+        LSState original_state = (LSState) state;
+        ArrayList<Successor> retVal = new ArrayList<>();
+        LSState new_state = new LSState(original_state.getTotalTimeServers(), original_state.getServerRequests());
 
-nombre de moves disponibles per una request:
-  x = servidors * (nminim-1)/(servidors -1)
+        int[] requests_servers = original_state.getServerRequests();
+        int size = requests_servers.length;
 
-total de moves disponibles = nrequests * x
+        //Nombre de moves possibles
+        int number_of_moves = 0;
+        for (int id_request = 0;  id_request < size; id_request++ )
+            number_of_moves += new_state.getServersOfRequest(id_request).size();
 
+        //Llista de swaps possibles
+        ArrayList<int[]> swaps = new ArrayList<>();
+        for (int id_request = 0; id_request < size ; id_request++ ){
+            int own_server = requests_servers[id_request];
 
+            for (int id_request2 = id_request + 1; id_request2 < size; ++id_request2){  //iterem sobre les altres requests per a veure tots els swaps possibles
+                int destination_server = requests_servers[id_request2];
+                if (requests_servers[id_request2] != requests_servers[id_request]    &&  //comprovem que no es troben en el mateix servidor
+                        new_state.requestInServer(id_request, destination_server)    &&  // comprovem que la request podria anar al servidor de la segona request
+                        new_state.requestInServer(id_request2, own_server)           ){  //comprovem que la segona request pot anar al nostre servidor
+                    swaps.add(new int[]{id_request, id_request2});
+                }
+            }
+        }
 
-nombre de swaps disponibles per a una request:
+        int total_number_operators = number_of_moves + swaps.size();
+        double probability_to_move = (double) number_of_moves / total_number_operators;
 
-  y = nrequests * ((nminim-1)/(servidors -1) * (nminim-1)/(servidors -1))
+        //segons la probabilitat fem un move o un swap
+        if (probability_to_move <= Math.random()) {
+            //fem un MOVE random
+            int move_id = randomRandint(0, number_of_moves - 1);
 
-total swaps disponibles = (y * nrequests) / 2
+            int id_request = 0;
+            int total_moves = new_state.getServersOfRequest(id_request).size();
+            while(move_id > total_moves) {
+                id_request++;
+                total_moves += new_state.getServersOfRequest(id_request).size();
+            }
 
+            // escollirem dels servers de id_request el total_moves - move_id
 
-amb aixo podem seaber la probabilitat amb la que haurem de fer un move o un swap:
+            int server_id_location = total_moves - move_id;
+            List<Integer> possible_servers = new ArrayList<>(new_state.getServersOfRequest(id_request));
+            int id_server = possible_servers.get(server_id_location);
+            new_state.moveRequest(id_request, id_server);
+        }
+        else {
+            //SWAP a random request
+            int[] id_request_pair = swaps.get(randomRandint(0, swaps.size()-1));
+            new_state.swapRequests(id_request_pair[0], id_request_pair[1]);
+        }
 
+        retVal.add(new Successor("", new_state));
+        return retVal;
 
-probabilitat de fer un move = nmoves/(nmoves + nswaps)
+    }
 
-
-*/
-    private double probabilityMove(LSState state){
-      // de moment sempre calcula el mateix aixi que podria ser estatic, o podem adaptarlo a diferents estats
-      int nservidors = state.getNServidors();
-      int nrequests = state.getNRequests();
-      int nminim = state.getNMinimServidorsPerFitxer();
-      double moves_per_request = nservidors * (nminim-1)/(nservidors -1)
-      double swaps_per_request = nrequests * ((nminim-1)/(nservidors -1) * (nminim-1)/(nservidors -1))
-
-      double total_moves = nrequests * moves_per_request
-      double total_swaps = (swaps_per_request * nrequests) / 2
-
-      return total_moves/(total_moves + total_swaps)
-    } 
+    //retorna un enter random entre min i max, els dos inclosos
+    private static int randomRandint(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
+    }
 
 
 }
