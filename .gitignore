@@ -27,3 +27,9 @@ replay_pid*
 .idea
 ia-busqueda-local-fib.iml
 out
+
+#Python
+src/execution_outputs/
+src/__pycache__/
+/__pycache__
+*/.pyc
