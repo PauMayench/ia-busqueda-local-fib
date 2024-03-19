@@ -21,9 +21,14 @@ public class LSState {
     numberOfServers = numServ;
   }
 
+  public LSState() {
+      totalTimeServers = new int[numberOfServers];
+      serverRequests = new int[requests.size()];
+  }
+
 
   //Crea solució incial Greedy temps total mínim.
-  public LSState() {
+  public void initializeGreedy() {
     int numServers = numberOfServers;
     int numRequests = requests.size();
     totalTimeServers = new int[numServers];
@@ -47,7 +52,7 @@ public class LSState {
   }
 
   //Generació full Random de la solució inicial (pot generar una solució molt dolenta).
-  public LSState(long seed) {
+  public void initializeRandom(long seed) {
     Random random = new Random(seed);
     int numServers = numberOfServers;
     int numRequests = requests.size();
