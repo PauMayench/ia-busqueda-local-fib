@@ -1,7 +1,4 @@
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 import IA.DistFS.Servers;
 import IA.DistFS.Requests;
@@ -14,27 +11,25 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
-/*
-*  Comprovar a cada experiment:
-*   - parametres generacio problema, seed
-*   - algorisme correcte
-*   - solucio inicial (amb seed o no)
-*   - heurisic correcte
-*   - parametres algorisme
-*   - prints activats
-*
-* */
-
 public class Main {
     static String SimulatedAnnealing = "SA";
     static String HillClimbing = "HC";
 
-    private static void generateProblem(int seed){
+    private static void generateProblem(int seed, String[] args){
 
-        int number_of_users = 200;                  //200
-        int max_number_files_user_can_request = 5;  //5
-        int number_servers = 50;                    //50
-        int minimum_replications_per_file = 5;      //5
+        int number_of_users = -1;                  //200
+        int max_number_files_user_can_request = -1;  //5
+        int number_servers = -1;                    //50
+        int minimum_replications_per_file = -1;      //5
+
+        try {
+            number_of_users = Integer.parseInt(args[0]);
+            max_number_files_user_can_request = Integer.parseInt(args[1]);
+            number_servers = Integer.parseInt(args[2]);
+            minimum_replications_per_file = Integer.parseInt(args[3]);
+        } catch (NumberFormatException e) {
+            usage("Some parameter/s of teh problem generation could not be parsed:" + "\nnumber_of_users=" + args[0] + "\nmax_number_files_user_can_request=" + args[1] + "\nnumber_servers=" + args[2] + "\nminimum_replications_per_file=" + args[3], 3 );
+        }
 
         try {
             Requests requests = new Requests(number_of_users, max_number_files_user_can_request, seed);
@@ -47,47 +42,91 @@ public class Main {
     }
 
     public static void main(String[] args){
+        // argv[0] number_of_users
+        // argv[1] max_number_files_user_can_request
+        // argv[2] number_servers
+        // argv[3] minimum_replications_per_file
+        // argv[4] seed per a generar el problema, si es 0 es una seed random
+        // argv[5] Algorisme HC SA
+        // argv[6] Estat inicial G R
+        // argv[7] heuristic h1->heuristic1  h2->heuristic2
+        // argv[8] steps
+        // argv[9] stiter
+        // argv[10] k
+        // argv[11] lambd
 
-        String algorithm = HillClimbing; //pot ser SimulatedAnnealing , HillClimbing o ""
+        if (args.length < 8) usage("must use 8 arguments at least", 2);
 
-        int seed = 120; //seed dels generadors del problema
-        generateProblem(seed);
+        displayArgsInfo(args);
 
-
-        if (Objects.equals(algorithm, HillClimbing)){
-            // HILL CLIMBING ------------------------------------------------------------------------------------
-            print("HILL CLIMBING");
-
-
-            LSState initial_state = new LSState();
-            HeuristicFunction heuristic = new LSHeuristicFunction1();
-
-            LSHillClimbingSearch(initial_state, heuristic);
-
-            initial_state.printSolution();
-
-            print("end HILL CLIMBING");
+        //Seed
+        String seedARG = args[4];
+        int seed = 0;
+        try {
+            seed = Integer.parseInt(seedARG);
+        } catch (NumberFormatException e) {
+            usage("args[4] must be a number or 0, it is: " + seedARG, 2);
+        }
+        if (seed == 0) {
+            seed = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         }
 
-        if(Objects.equals(algorithm, SimulatedAnnealing)) {
-            // SIMULATED ANNEALING ------------------------------------------------------------------------------
-            print("SIMULATED ANNEALING");
+        //Search algorithm
+        String algorithmARG = args[5];
+        if(!Arrays.asList("SA", "HC").contains(algorithmARG) ) usage("args[5] must be HC or SA, it is: " + algorithmARG ,2);
+
+        //Initial Algorithm
+        String intitial_algorithmARG = args[6];
+        if(!Arrays.asList("G", "R").contains(intitial_algorithmARG) ) usage("args[6] must be G or R, it is: " + intitial_algorithmARG ,2);
+
+        //Heuristic
+        String heuristicARG = args[7];
+        if(!Arrays.asList("h1", "h2").contains(heuristicARG) ) usage("args[7] must be h1 or h2, it is: " + heuristicARG ,2);
 
 
-            LSState initial_state = new LSState();
-            HeuristicFunction heuristic = new LSHeuristicFunction1();
-            int steps = 2000;        // 2000
-            int stiter = 100;        // 100
-            int k = 5;               // 5
-            double lambd = 0.001;    // 0.001
 
-            LSSimulatedAnnealingSearch(initial_state, heuristic, steps, stiter, k, lambd);
 
-            initial_state.printSolution();
+        // MAIN
 
-            print("end SIMULATED ANNEALING");
+        generateProblem(seed, args);
+
+        //initialize state
+        LSState state = new LSState();
+        if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
+        if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
+
+        //heuristic
+        HeuristicFunction heuristic = new LSHeuristicFunction1();
+        if(heuristicARG.equals("h2"))  heuristic = new LSHeuristicFunction2();
+
+        //Hill Climbing
+        if (Objects.equals(algorithmARG, HillClimbing)) {
+            LSHillClimbingSearch(state, heuristic);
+        }
+        //Simulated Annealing
+        else if(algorithmARG.equals(SimulatedAnnealing)) {
+            if (args.length < 12) usage("to use SA you need at least 12 arguments", 2);
+
+            int steps = -1;
+            int stiter = -1;
+            int k = -1;
+            double lambd = -1;
+
+            try {
+                steps = Integer.parseInt(args[8]);
+                stiter = Integer.parseInt(args[9]);
+                k = Integer.parseInt(args[10]);
+                lambd = Double.parseDouble(args[11]);
+            } catch (NumberFormatException e) {
+                usage("Some parameter/s on the SA could not be parsed:" + "\nsteps=" + args[8] + "\nstiter=" + args[9] + "\nk=" + args[10] + "\nlambd=" + args[11], 3 );
+            }
+
+
+
+            LSSimulatedAnnealingSearch(state, heuristic, steps, stiter, k, lambd);
 
         }
+        state.printSolution();
 
     }
 
@@ -122,13 +161,67 @@ public class Main {
         }
     }
 
-    //fa un print si verbose es true
-    private static void print(String s){
-        boolean verbose = true;
-        if (verbose) {
-            System.out.println(s);
-        }
+    private static void usage(String errorMessage, int exitCode){
+        System.out.println("\nERROR MESSAGE: \n" + errorMessage );
+        System.out.println("\nUsage: make run <number_of_users> <max_number_files_user_can_request> <number_servers> <minimum_replications_per_file> <seed> <algorithm> <initial_state> <heuristic> [<steps> <stiter> <k> <lambda>]");
+        System.out.println("where:");
+        System.out.println("\t<number_of_users>:\t\t\tThe number of users generating requests.");
+        System.out.println("\t<max_number_files_user_can_request>:\tThe maximum number of files a user can request.");
+        System.out.println("\t<number_servers>:\t\t\tThe number of servers storing the files.");
+        System.out.println("\t<minimum_replications_per_file>:\tThe minimum number of replications for each file across the servers.");
+        System.out.println("\t<seed>:\t\t\t\tAn integer value for seeding the problem generation. Use 0 for a random seed.");
+        System.out.println("\t<algorithm>:\t\t\tHC (Hill Climbing) or SA (Simulated Annealing)");
+        System.out.println("\t<initial_state>:\t\tG (Greedy Initial State) or R (Random Initial State)");
+        System.out.println("\t<heuristic>:\t\t\th1 (Heuristic 1) or h2 (Heuristic 2)");
+        System.out.println("\nFor Simulated Annealing (SA) algorithm, the following additional parameters are required:");
+        System.out.println("\t<steps>:\t\t\tThe number of steps in the SA algorithm.");
+        System.out.println("\t<stiter>:\t\t\tThe number of iterations per step in the SA algorithm.");
+        System.out.println("\t<k>:\t\t\t\tThe k parameter in the SA algorithm.");
+        System.out.println("\t<lambda>:\t\t\tThe lambda cooling coefficient in the SA algorithm.");
+        System.out.println("\nExample:");
+        System.out.println("make run 200 5 50 5 123 HC G h1");
+        System.out.println("make run 200 5 50 5 0 SA R h2 1000 100 5 0.95\n");
+        System.exit(exitCode);
     }
+
+    public static void displayArgsInfo(String[] args) {
+        if (args.length < 8) {
+            return;
+        }
+
+        String[] keys = {
+                "number_of_users",
+                "max_number_files_user_can_request",
+                "number_servers",
+                "minimum_replications_per_file",
+                "seed",
+                "algorithm",
+                "initial_state",
+                "heuristic"
+        };
+
+        String[] saKeys = {"steps", "stiter", "k", "lambd"};
+
+        // Find the longest key for padding
+        int maxKeyLength = 0;
+        for (String arg : args) {
+            if (arg.length() > maxKeyLength) {
+                maxKeyLength = arg.length();
+            }
+        }
+
+        System.out.print("\nCALL INFO:\n\n");
+        for (int i = 0; i < args.length; ++i) {
+            String key = i < keys.length ? keys[i] : (i - keys.length < saKeys.length ? saKeys[i - keys.length] : "unknown");
+            // Padding the parameter for alignment, switch positions of key and args[i]
+            System.out.printf("%-" + (maxKeyLength + 3) + "s: %-20s [%d]\n", args[i], key, i);
+        }
+        System.out.print("\n\n");
+
+    }
+
 }
+
+
 
 
