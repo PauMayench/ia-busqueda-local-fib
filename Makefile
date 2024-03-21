@@ -1,12 +1,14 @@
-SRC_DIR := .
-OUT_DIR := ../EXE
-LIB_DIR := ../lib
+SRC_DIR := ./src
+OUT_DIR := ./EXE
+LIB_DIR := ./lib
 LIBS := $(LIB_DIR)/AIMA.jar:$(LIB_DIR)/DistributedFS.jar
 
 
 all: compile
 
-compile: $(wildcard *.java)
+JAVA_FILES := $(wildcard $(SRC_DIR)/*.java)
+
+compile: $(JAVA_FILES)
 	javac -d $(OUT_DIR) -cp $(LIBS) $^
 
 #no toqueu del run fins despres de @ que sino no funciona el   	make run param1 param2 ...
@@ -17,6 +19,10 @@ run:
 
 %:
 	@:
+
+# Per executar amb python
+pymain:
+	python3 src/main.py
 
 
 # Elimina todos los .class
