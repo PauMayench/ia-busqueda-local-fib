@@ -36,7 +36,7 @@ public class Main {
             Servers servers = new Servers(number_servers, minimum_replications_per_file, seed);
             LSState.InitializeStatic(requests, servers, number_servers);
         }
-        catch(Exception e){
+        catch(Exception e){ // la creacio del Servers pot llançar excepcio si: nrep/nserv > 0.5   (el fitxer esta replicat a mes del 50% dels servidors
             System.out.println("error parametres");
         }
     }
@@ -94,6 +94,8 @@ public class Main {
         LSState state = new LSState();
         if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
         if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
+
+        System.out.println("\nSolucio Inicial:");
         state.printSolution(); // Initial Solution
 
         //heuristic
@@ -127,6 +129,8 @@ public class Main {
             LSSimulatedAnnealingSearch(state, heuristic, steps, stiter, k, lambd);
 
         }
+
+        System.out.println("Solucio Final:");
         state.printSolution();
 
     }

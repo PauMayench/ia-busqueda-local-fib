@@ -18,18 +18,32 @@ public class LSState {
     private int [] serverRequests;      // index del vector son els index dels requests i el valor el index del servidor
 
 
-      //Inicialitza
+    // Inicialitzacio Requests i Servers
+
+    // nomes els parametres statics que representen els Requests i Servers del Distributed File System
+    // aquesta funcio es crida abans de cridar a qualsevol constructora
     public static void InitializeStatic(Requests req, Servers serv, int numServ) {
         requests = req;
         servers = serv;
         numberOfServers = numServ;
     }
 
+    // Constructores
+
+    // Constructora buida
     public LSState() {
         totalTimeServers = new int[numberOfServers];
         serverRequests = new int[requests.size()];
     }
 
+    //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
+    public LSState(int[] actualTotalTimeServers, int[] actualServerRequests) {
+        totalTimeServers = actualTotalTimeServers;
+        serverRequests = actualServerRequests;
+    }
+
+
+    // Generacio solucions inicials  (Estats solucions)
 
     //Crea solució incial Greedy temps total mínim.
     public void initializeGreedy() {
@@ -89,11 +103,7 @@ public class LSState {
         }
     }
 
-    //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
-    public LSState(int[] actualTotalTimeServers, int[] actualServerRequests) {
-        totalTimeServers = actualTotalTimeServers;
-        serverRequests = actualServerRequests;
-    }
+
 
     //Getters
 
@@ -141,7 +151,7 @@ public class LSState {
 
     // Operadors:
 
-    // Operador de swap entre dos peticions (fitxers)
+    // Operador Swap per intercanviar dos peticions (fitxers)
     // Input: dos index del les dos peticions a intercanviar
     // Output: boolean de si ha pogut fer el swap, en cas que pugui fa el swap
     public boolean swapRequests(int id_req1, int id_req2) {
@@ -189,7 +199,7 @@ public class LSState {
         return true;
     }
 
-    // Operador per moure un request a un altre servidor
+    // Operador Move per moure un request a un altre servidor
     // Input: index request  index servidor
     // Output: boolean de si ha pogut fer el move, en cas que pugui el mou
     public boolean moveRequest(int id_req, int id_serv) {
@@ -216,20 +226,19 @@ public class LSState {
     }
 
     // static?
-    public void printSolution() {     // cridar desde el main
+    // Funcio que imprimeix l'estat solucio, cridarlo desde el main un cop ha acabat l'algorisme
+    public void printSolution() {
         int numServers = getNumServers();
-        System.out.println("Num servers: " + numServers);
-        System.out.println("vector amb cada pos el temps ple del servidor");
-        for (int i = 0; i < numServers; i++) {
-            System.out.print(totalTimeServers[i] + " ");
-        }
+        System.out.println("Num servers: " + numServers + " - vector amb cada pos el temps ple del servidor:\n");
+        for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
+
+        System.out.println("\n");
 
         int numRequests = getNumRequests();
-        System.out.println("Num requests: " + numRequests);
-        System.out.println("index del vector son els index dels requests i el valor el index del servidor:");
-        for (int i = 0; i < numRequests; i++) {
-            System.out.print(serverRequests[i] + " ");
-        }
+        System.out.println("Num requests: " + numRequests + " - Requests al server que van:\n");
+        for (int i = 0; i < numRequests; i++) System.out.print(serverRequests[i] + " ");
+
+        System.out.println("\n\n--------------------------------------------------------------");
     }
 
 }
