@@ -4,6 +4,8 @@ import IA.DistFS.Servers;
 import java.util.Random;
 import java.util.Set;
 
+import static java.lang.Math.abs;
+
 public class LSState {
 
   private static Requests requests;
@@ -36,15 +38,23 @@ public class LSState {
     for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
     for (int i = 0; i < numRequests; ++i) {
       int[] actualRequest = requests.getRequest(i);
+      Set<Integer> availableServers = servers.fileLocations(actualRequest[1]);
+      int [] availableServA = new int[availableServers.size()];
+      int counter = 0;
+      for (Integer v : availableServers) {
+          availableServA[counter] = v;
+          ++counter;
+      }
       int userId = actualRequest[0];
       int minTime = -1;
       int minServer = -1;
-      for (int j = 0; j < numServers; ++j) {
-        int actualTime = servers.tranmissionTime(j,userId);
-        if ((actualTime < minTime) || (minTime == -1)) {
-          minTime = actualTime;
-          minServer = j;
-        }
+      for (int j = 0; j < availableServA.length; ++j) {
+          int serverId = availableServA[j];
+          int actualTime = servers.tranmissionTime(serverId,userId);
+          if ((actualTime < minTime) || (minTime == -1)) {
+              minTime = actualTime;
+              minServer = serverId;
+          }
       }
       serverRequests[i] = minServer; //Assignem request al sevidor minServer.
       totalTimeServers[minServer] += minTime; //Afegim al total del servidor el temps de la nova request.
@@ -60,11 +70,20 @@ public class LSState {
     serverRequests = new int[numRequests];
     for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
     for (int i = 0; i < numRequests; ++i) {
-      int randomServer = (random.nextInt()) % numServers;
-      int userId = requests.getRequest(i)[0];
-      int RandServTime = servers.tranmissionTime(randomServer, userId);
-      serverRequests[i] = randomServer;
-      totalTimeServers[randomServer] += RandServTime;
+        int[] req = requests.getRequest(i);
+        Set<Integer> availableServers = servers.fileLocations(req[1]);
+        int [] availableServA = new int[availableServers.size()];
+        int counter = 0;
+        for (Integer v : availableServers) {
+            availableServA[counter] = v;
+            ++counter;
+        }
+        int randServId = (abs(random.nextInt())) % availableServA.length;
+        int randomServer = availableServA[randServId];
+        int userId = req[0];
+        int RandServTime = servers.tranmissionTime(randomServer, userId);
+        serverRequests[i] = randomServer;
+        totalTimeServers[randomServer] += RandServTime;
     }
   }
 

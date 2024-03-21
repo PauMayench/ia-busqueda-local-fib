@@ -94,6 +94,7 @@ public class Main {
         LSState state = new LSState();
         if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
         if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
+        state.printSolution(); // Initial Solution
 
         //heuristic
         HeuristicFunction heuristic = new LSHeuristicFunction1();
