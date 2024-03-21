@@ -60,13 +60,14 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
             int total_moves = new_state.getServersOfRequest(id_request).size();
             while(move_id > total_moves) {
                 id_request++;
-                total_moves += new_state.getServersOfRequest(id_request).size();
+                total_moves += new_state.getServersOfRequest(id_request).size()-1;
             }
 
             // escollirem dels servers de id_request el total_moves - move_id
-
             int server_id_location = total_moves - move_id;
             List<Integer> possible_servers = new ArrayList<>(new_state.getServersOfRequest(id_request));
+            int own_server = requests_servers[id_request];
+            possible_servers.remove(own_server);
             int id_server = possible_servers.get(server_id_location);
             new_state.moveRequest(id_request, id_server);
         }
