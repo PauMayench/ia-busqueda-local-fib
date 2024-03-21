@@ -121,16 +121,6 @@ public class LSState {
         return requests.size();
     }
 
-    public int getNumServers() {
-        return totalTimeServers.length;
-    }
-
-
-    public LSState copyState() {
-        LSState newState = new LSState();
-        return newState;
-    }
-
 
     // donat un request que conte un file, retorna el set amb tots els servers que tenen replicat el file
     public Set<Integer> getServersOfRequest(int request) {
