@@ -19,10 +19,8 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
         // per tots els requests    fer Swap
         for (int r1 = 0; r1 < numRequests; r1++) {
 
-            // TODO: mirar nomes llista dels requests que estan replicats en el server?
-
             // per tots els altres requests
-            for (int r2 = r1 + 1; r2 < numRequests; r2++) {  // j = i + 1 al fer swaps evitem tractar el mateix request i simetrics
+            for (int r2 = r1 + 1; r2 < numRequests; r2++) {  // r2 = r1 + 1 vol dir que al fer swaps evitem tractar el mateix request i simetrics
 
                 LSState newState = new LSState(state.getTotalTimeServers(), state.getServerRequests());
 
