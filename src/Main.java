@@ -225,6 +225,14 @@ public class Main {
 
     }
 
+    public static int totalTimeTransmission(int[] totalTimeServers) {
+        int totalTime = 0;
+        for (int time : totalTimeServers) {
+            totalTime += time;
+        }
+        return totalTime;
+    }
+
     // Imprimeix l'estat solucio, els servidors amb el temps emplenat i cada request el servidor que va
     public static void printSolution(LSState state) {
         int[] totalTimeServers = state.getTotalTimeServers();
@@ -233,6 +241,8 @@ public class Main {
         System.out.println("Num servers: " + numServers + " - vector amb cada pos el temps ple del servidor:\n");
 
         for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
+
+        System.out.println("\n\nTotal time transmission: " + totalTimeTransmission(totalTimeServers));
 
         System.out.println("\n");
         int[] serverRequests = state.getServerRequests();
