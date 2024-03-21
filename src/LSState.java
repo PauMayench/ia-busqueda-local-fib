@@ -224,23 +224,7 @@ public class LSState {
 
         return true;
     }
-
-    // static?
-    // Funcio que imprimeix l'estat solucio, cridarlo desde el main un cop ha acabat l'algorisme
-    public void printSolution() {
-        int numServers = getNumServers();
-        System.out.println("Num servers: " + numServers + " - vector amb cada pos el temps ple del servidor:\n");
-        for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
-
-        System.out.println("\n");
-
-        int numRequests = getNumRequests();
-        System.out.println("Num requests: " + numRequests + " - Requests al server que van:\n");
-        for (int i = 0; i < numRequests; i++) System.out.print(serverRequests[i] + " ");
-
-        System.out.println("\n\n--------------------------------------------------------------");
-    }
-
+    
 }
 
 

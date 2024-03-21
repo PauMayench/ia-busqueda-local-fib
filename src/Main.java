@@ -96,7 +96,7 @@ public class Main {
         if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
 
         System.out.println("\nSolucio Inicial:");
-        state.printSolution(); // Initial Solution
+        printSolution(state); // Initial Solution
 
         //heuristic
         HeuristicFunction heuristic = new LSHeuristicFunction1();
@@ -131,7 +131,7 @@ public class Main {
         }
 
         System.out.println("Solucio Final:");
-        state.printSolution();
+        printSolution(state);
 
     }
 
@@ -223,6 +223,24 @@ public class Main {
         }
         System.out.print("\n\n");
 
+    }
+
+    // Imprimeix l'estat solucio, els servidors amb el temps emplenat i cada request el servidor que va
+    public static void printSolution(LSState state) {
+        int[] totalTimeServers = state.getTotalTimeServers();
+        int numServers = totalTimeServers.length;
+
+        System.out.println("Num servers: " + numServers + " - vector amb cada pos el temps ple del servidor:\n");
+
+        for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
+
+        System.out.println("\n");
+        int[] serverRequests = state.getServerRequests();
+        int numRequests = serverRequests.length;
+        System.out.println("Num requests: " + numRequests + " - Requests al server que van:\n");
+        for (int i = 0; i < numRequests; i++) System.out.print(serverRequests[i] + " ");
+
+        System.out.println("\n\n--------------------------------------------------------------");
     }
 
 }
