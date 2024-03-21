@@ -47,7 +47,7 @@ pool.execute_parallel() #optional integer parameter, max number of cores to exec
 '''
 
 class LSexecutionPool():
-
+    execution_outputs_location = "."
 #this will create a folder called execution_outputs on the directory that you are calling the python script
     def __init__(self, ask_folder_name=True):
         
@@ -57,10 +57,10 @@ class LSexecutionPool():
         if ask_folder_name:
             name = input("Name of the new execution folder (press enter to leave blank):")
         
-        folder_name = datetime.now().strftime("%Y-%m-%d_%H:%M") + (("_" + name) if name else "")
+        folder_name = datetime.now().strftime("%Y-%m-%d_%H_%M") + (("_" + name) if name else "")
 
 
-        full_folder_path = f"execution_outputs/{folder_name}/"
+        full_folder_path = f"{self.execution_outputs_location}/execution_outputs/{folder_name}/"
         os.makedirs(full_folder_path, exist_ok=True) 
 
         self.full_folder_path = full_folder_path
