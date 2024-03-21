@@ -8,113 +8,118 @@ import static java.lang.Math.abs;
 
 public class LSState {
 
-  private static Requests requests;
-  private static Servers servers;
+    private static Requests requests;
+    private static Servers servers;
 
-  private static int numberOfServers;
-  private int [] totalTimeServers;  // vector amb cada pos el temps ple del servidor
-  private int [] serverRequests;    // index del vector son els index dels requests i el valor el index del servidor
+    private static int numberOfServers;
 
-
-  //Inicialitza
-  public static void InitializeStatic(Requests req, Servers serv, int numServ) {
-    requests = req;
-    servers = serv;
-    numberOfServers = numServ;
-  }
-
-  public LSState() {
-      totalTimeServers = new int[numberOfServers];
-      serverRequests = new int[requests.size()];
-  }
+    // Representacio de l'estat
+    private int [] totalTimeServers;    // index del vector els servers i els valors el temps total de tranmissio dels fitxers del server
+    private int [] serverRequests;      // index del vector son els index dels requests i el valor el index del servidor
 
 
-  //Crea solució incial Greedy temps total mínim.
-  public void initializeGreedy() {
-    int numServers = numberOfServers;
-    int numRequests = requests.size();
-    totalTimeServers = new int[numServers];
-    serverRequests = new int[numRequests];
-    for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
-    for (int i = 0; i < numRequests; ++i) {
-      int[] actualRequest = requests.getRequest(i);
-      Set<Integer> availableServers = servers.fileLocations(actualRequest[1]);
-      int [] availableServA = new int[availableServers.size()];
-      int counter = 0;
-      for (Integer v : availableServers) {
-          availableServA[counter] = v;
-          ++counter;
-      }
-      int userId = actualRequest[0];
-      int minTime = -1;
-      int minServer = -1;
-      for (int j = 0; j < availableServA.length; ++j) {
-          int serverId = availableServA[j];
-          int actualTime = servers.tranmissionTime(serverId,userId);
-          if ((actualTime < minTime) || (minTime == -1)) {
-              minTime = actualTime;
-              minServer = serverId;
-          }
-      }
-      serverRequests[i] = minServer; //Assignem request al sevidor minServer.
-      totalTimeServers[minServer] += minTime; //Afegim al total del servidor el temps de la nova request.
+      //Inicialitza
+    public static void InitializeStatic(Requests req, Servers serv, int numServ) {
+        requests = req;
+        servers = serv;
+        numberOfServers = numServ;
     }
-  }
 
-  //Generació full Random de la solució inicial (pot generar una solució molt dolenta).
-  public void initializeRandom(long seed) {
-    Random random = new Random(seed);
-    int numServers = numberOfServers;
-    int numRequests = requests.size();
-    totalTimeServers = new int[numServers];
-    serverRequests = new int[numRequests];
-    for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
-    for (int i = 0; i < numRequests; ++i) {
-        int[] req = requests.getRequest(i);
-        Set<Integer> availableServers = servers.fileLocations(req[1]);
-        int [] availableServA = new int[availableServers.size()];
-        int counter = 0;
-        for (Integer v : availableServers) {
-            availableServA[counter] = v;
-            ++counter;
+    public LSState() {
+        totalTimeServers = new int[numberOfServers];
+        serverRequests = new int[requests.size()];
+    }
+
+
+    //Crea solució incial Greedy temps total mínim.
+    public void initializeGreedy() {
+        int numServers = numberOfServers;
+        int numRequests = requests.size();
+        totalTimeServers = new int[numServers];
+        serverRequests = new int[numRequests];
+        for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
+        for (int i = 0; i < numRequests; ++i) {
+            int[] actualRequest = requests.getRequest(i);
+            Set<Integer> availableServers = servers.fileLocations(actualRequest[1]);
+            int[] availableServA = new int[availableServers.size()];
+            int counter = 0;
+            for (Integer v : availableServers) {
+                availableServA[counter] = v;
+                ++counter;
+            }
+            int userId = actualRequest[0];
+            int minTime = -1;
+            int minServer = -1;
+            for (int j = 0; j < availableServA.length; ++j) {
+                int serverId = availableServA[j];
+                int actualTime = servers.tranmissionTime(serverId, userId);
+                if ((actualTime < minTime) || (minTime == -1)) {
+                    minTime = actualTime;
+                    minServer = serverId;
+                }
+            }
+            serverRequests[i] = minServer; //Assignem request al sevidor minServer.
+            totalTimeServers[minServer] += minTime; //Afegim al total del servidor el temps de la nova request.
         }
-        int randServId = (abs(random.nextInt())) % availableServA.length;
-        int randomServer = availableServA[randServId];
-        int userId = req[0];
-        int RandServTime = servers.tranmissionTime(randomServer, userId);
-        serverRequests[i] = randomServer;
-        totalTimeServers[randomServer] += RandServTime;
     }
-  }
 
-  //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
-  public LSState (int[] actualTotalTimeServers, int[] actualServerRequests) {
-    totalTimeServers = actualTotalTimeServers;
-    serverRequests = actualServerRequests;
-  }
+    //Generació full Random de la solució inicial (pot generar una solució molt dolenta).
+    public void initializeRandom(long seed) {
+        Random random = new Random(seed);
+        int numServers = numberOfServers;
+        int numRequests = requests.size();
+        totalTimeServers = new int[numServers];
+        serverRequests = new int[numRequests];
+        for (int i = 0; i < numServers; ++i) totalTimeServers[i] = 0;
+        for (int i = 0; i < numRequests; ++i) {
+            int[] req = requests.getRequest(i);
+            Set<Integer> availableServers = servers.fileLocations(req[1]);
+            int[] availableServA = new int[availableServers.size()];
+            int counter = 0;
+            for (Integer v : availableServers) {
+                availableServA[counter] = v;
+                ++counter;
+            }
+            int randServId = (abs(random.nextInt())) % availableServA.length;
+            int randomServer = availableServA[randServId];
+            int userId = req[0];
+            int RandServTime = servers.tranmissionTime(randomServer, userId);
+            serverRequests[i] = randomServer;
+            totalTimeServers[randomServer] += RandServTime;
+        }
+    }
 
-  //Getters
-  public int[] getTotalTimeServers() {return totalTimeServers;}
-  public int[] getServerRequests() {return serverRequests;}
+    //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
+    public LSState(int[] actualTotalTimeServers, int[] actualServerRequests) {
+        totalTimeServers = actualTotalTimeServers;
+        serverRequests = actualServerRequests;
+    }
+
+    //Getters
+
+    public int[] getTotalTimeServers() {return totalTimeServers;}
+    public int[] getServerRequests() {return serverRequests;}
 
     //PRECAUCIÓ: El temps d'un request CANVIA ENTRE SERVIDORS (DEPÈN DEL SERVIDOR AL QUE FEM LA REQUEST).
     public int getRequestTime(int idReq) {
-      int userId = requests.getRequest(idReq)[0];
-      int idServer = serverRequests[idReq];
-      return servers.tranmissionTime(idServer, userId);
+        int userId = requests.getRequest(idReq)[0];
+        int idServer = serverRequests[idReq];
+        return servers.tranmissionTime(idServer, userId);
     }
 
     public int getNumRequests() {
-      return requests.size();
+        return requests.size();
+    }
+
+    public int getNumServers() {
+        return totalTimeServers.length;
     }
 
 
-    public int getNumServers() {return totalTimeServers.length;}
-
-  public LSState copyState() {
-    LSState newState = new LSState();
-    return newState;
-  }
+    public LSState copyState() {
+        LSState newState = new LSState();
+        return newState;
+    }
 
 
     // donat un request que conte un file, retorna el set amb tots els servers que tenen replicat el file
