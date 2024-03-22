@@ -65,22 +65,29 @@ class LSexecutionPool():
 
         self.full_folder_path = full_folder_path
     
-    def add_HC(self, name_file, number_of_users, max_number_files_user_can_request, number_servers, minimum_replications_per_file, seed, initial_state, heuristic):
+    def add_HC(self, name_file, number_of_users, max_number_files_user_can_request, number_servers, minimum_replications_per_file, seed, initial_state, heuristic, random_seed=None):
         
         output_path = self.full_folder_path + name_file
         output_path.replace(".", "_")
         
-        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'HC', initial_state, heuristic, output_path + ".out"]
-        
+        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'HC', initial_state, heuristic]
+        if random_seed:
+            command.append(str(random_seed))
+        command.append(output_path + ".out")
         self.pendent_executions.append(command)
 
-    def add_SA(self, name_file, number_of_users, max_number_files_user_can_request, number_servers, minimum_replications_per_file, seed, initial_state, heuristic, steps, stiter, k, lambd):
+    def add_SA(self, name_file, number_of_users, max_number_files_user_can_request, number_servers, minimum_replications_per_file, seed, initial_state, heuristic, steps, stiter, k, lambd, random_seed=None):
         
         output_path = self.full_folder_path + name_file
         output_path.replace(".", "_")
 
-        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'SA', initial_state, heuristic, str(steps), str(stiter), str(k), str(lambd), output_path + ".out"]
+        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'SA', initial_state, heuristic, str(steps), str(stiter), str(k), str(lambd)]
         
+        if random_seed:
+            command.append(str(random_seed))
+            
+        command.append(output_path + ".out")
+
         self.pendent_executions.append(command)
 
 

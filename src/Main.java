@@ -37,7 +37,7 @@ public class Main {
             LSState.InitializeStatic(requests, servers, number_servers);
         }
         catch(Exception e){ // la creacio del Servers pot llançar excepcio si: nrep/nserv > 0.5   (el fitxer esta replicat a mes del 50% dels servidors
-            System.out.println("error parametres");
+            usage("minimum_replications_per_file/number_servers must be < 0.5 ", 3);
         }
     }
 
@@ -54,6 +54,8 @@ public class Main {
         // argv[9] stiter
         // argv[10] k
         // argv[11] lambd
+        // argv[8/12] seed per al Random initialize, sense aqeust parametre es una seed random
+
 
         if (args.length < 8) usage("must use 8 arguments at least", 2);
 
@@ -78,6 +80,19 @@ public class Main {
         //Initial Algorithm
         String intitial_algorithmARG = args[6];
         if(!Arrays.asList("G", "R").contains(intitial_algorithmARG) ) usage("args[6] must be G or R, it is: " + intitial_algorithmARG ,2);
+
+        //seed for Random initial Algorithm
+        int seedRandomAlg = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+        int argsIndex = 8;
+        if(algorithmARG.equals("SA")) argsIndex = 12;
+        if (args.length == argsIndex + 1) {
+            try {
+                seed = Integer.parseInt(args[argsIndex]);
+            } catch (NumberFormatException e) {
+                usage("args[8(HC) or 12(SA)] must be a number, it is: " + args[argsIndex], 2);
+            }
+        }
+
 
         //Heuristic
         String heuristicARG = args[7];
@@ -126,7 +141,7 @@ public class Main {
 
 
 
-            LSSimulatedAnnealingSearch(state, heuristic, steps, stiter, k, lambd);
+            LSSimulatedAnnealingSearch(state, heuristic, steps, stiter, k, lambd, seed);
 
         }
 
@@ -149,10 +164,10 @@ public class Main {
         }
     }
 
-    private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd) {
+    private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd, int seed) {
         try {
 
-            Problem problem =  new Problem(initial_state,new LSSuccessorFunctionSA(), new LSGoalTest(), heuristicFunction);
+            Problem problem =  new Problem(initial_state,new LSSuccessorFunctionSA(seed), new LSGoalTest(), heuristicFunction);
 
             SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
 
@@ -168,7 +183,7 @@ public class Main {
 
     private static void usage(String errorMessage, int exitCode){
         System.out.println("\nERROR MESSAGE: \n" + errorMessage );
-        System.out.println("\nUsage: make run <number_of_users> <max_number_files_user_can_request> <number_servers> <minimum_replications_per_file> <seed> <algorithm> <initial_state> <heuristic> [<steps> <stiter> <k> <lambda>]");
+        System.out.println("\nUsage: make run <number_of_users> <max_number_files_user_can_request> <number_servers> <minimum_replications_per_file> <seed> <algorithm> <initial_state> <heuristic> [<steps> <stiter> <k> <lambda>] []");
         System.out.println("where:");
         System.out.println("\t<number_of_users>:\t\t\tThe number of users generating requests.");
         System.out.println("\t<max_number_files_user_can_request>:\tThe maximum number of files a user can request.");
@@ -183,8 +198,10 @@ public class Main {
         System.out.println("\t<stiter>:\t\t\tThe number of iterations per step in the SA algorithm.");
         System.out.println("\t<k>:\t\t\t\tThe k parameter in the SA algorithm.");
         System.out.println("\t<lambda>:\t\t\tThe lambda cooling coefficient in the SA algorithm.");
+        System.out.println("\nFor the Random initializer algorithm, the following parameter is optional");
+        System.out.println("\t<random_initializer_seed>:\t\t\tThe seed for the Random initializer algorithm, if lefts blank its a random seed");
         System.out.println("\nExample:");
-        System.out.println("make run 200 5 50 5 123 HC G h1");
+        System.out.println("make run 5 2 10 3 0 HC G h1");
         System.out.println("make run 200 5 50 5 0 SA R h2 1000 100 5 0.95\n");
         System.exit(exitCode);
     }
