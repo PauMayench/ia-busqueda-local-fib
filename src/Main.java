@@ -110,8 +110,7 @@ public class Main {
         if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
         if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
 
-        System.out.println("\nSolucio Inicial:");
-        printSolution(state); // Initial Solution
+        printSolution(state, "INITIAL STATE"); // Initial Solution
 
         //heuristic
         HeuristicFunction heuristic = new LSHeuristicFunction1();
@@ -149,20 +148,22 @@ public class Main {
 
     private static void LSHillClimbingSearch(LSState initial_state, HeuristicFunction heuristicFunction) {
         try {
+            System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
+
             Problem problem =  new Problem(initial_state, new LSSuccessorFunctionHC(), new LSGoalTest(), heuristicFunction);
             Search search =  new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem,search);
             // Debugging lines:
+            System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
+
             System.out.println("ACTIONS:");
             printActions(agent.getActions());
             System.out.println("PROPERTIES:");
             printInstrumentation(agent.getInstrumentation());
-            System.out.println("FINAL STATE:");
-            System.out.println("_____________________________________________");
+
             LSState finalState = (LSState) search.getGoalState();
-            printSolution(finalState);
+            printSolution(finalState, "FINAL STATE");
             System.out.println();
-            System.out.println("_____________________________________________");
 
 
             System.out.println();
@@ -293,7 +294,9 @@ public class Main {
     }
 
     // Imprimeix l'estat solucio, els servidors amb el temps emplenat i cada request el servidor que va
-    public static void printSolution(LSState state) {
+    public static void printSolution(LSState state, String name_display) {
+        System.out.println("\n\n--------------------------------------- " + name_display +" ---------------------------------------\n");
+
         int[] totalTimeServers = state.getTotalTimeServers();
         int numServers = totalTimeServers.length;
 
@@ -313,7 +316,7 @@ public class Main {
         System.out.println("Num requests: " + numRequests + " - Requests al server que van:\n");
         for (int i = 0; i < numRequests; i++) System.out.print(serverRequests[i] + " ");
 
-        System.out.println("\n\n--------------------------------------------------------------");
+        System.out.println("\n--------------------------------------------------------------------------------------");
     }
 
     private static void printInstrumentation(Properties properties) {
