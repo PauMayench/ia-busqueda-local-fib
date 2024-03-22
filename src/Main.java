@@ -147,7 +147,6 @@ public class Main {
 
         System.out.println("Solucio Final:");
         printSolution(state);
-
     }
 
 
@@ -156,6 +155,19 @@ public class Main {
             Problem problem =  new Problem(initial_state, new LSSuccessorFunctionHC(), new LSGoalTest(), heuristicFunction);
             Search search =  new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem,search);
+            // Debugging lines:
+            System.out.println("ACTIONS:");
+            printActions(agent.getActions());
+            System.out.println("PROPERTIES:");
+            printInstrumentation(agent.getInstrumentation());
+            System.out.println("GOAL STATE:");
+            System.out.println("_____________________________________________");
+            LSState finalState = (LSState) search.getGoalState();
+            int [] vecGoalState = finalState.getTotalTimeServers();
+            for (int i = 0; i < vecGoalState.length; ++i) System.out.print(vecGoalState[i] + " ");
+            System.out.println();
+            System.out.println("_____________________________________________");
+
 
             System.out.println();
         } catch (Exception e) {
@@ -268,6 +280,25 @@ public class Main {
         for (int i = 0; i < numRequests; i++) System.out.print(serverRequests[i] + " ");
 
         System.out.println("\n\n--------------------------------------------------------------");
+    }
+
+    private static void printInstrumentation(Properties properties) {
+        Iterator keys = properties.keySet().iterator();
+
+        while(keys.hasNext()) {
+            String key = (String)keys.next();
+            String property = properties.getProperty(key);
+            System.out.println(key + " : " + property);
+        }
+
+    }
+
+    private static void printActions(List actions) {
+        for(int i = 0; i < actions.size(); ++i) {
+            String action = (String)actions.get(i);
+            System.out.println(action);
+        }
+
     }
 
 }
