@@ -12,7 +12,7 @@ public class LSHeuristicFunction1 implements HeuristicFunction  {
             int actual = totalTimeServers[i];
             if (actual > max) max = actual;
         }
-        return max; //Quadrat per a augmentar les diferències entre valors.
+        return max * max; //Quadrat per a augmentar les diferències entre valors.
     }
   
 }

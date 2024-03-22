@@ -144,9 +144,6 @@ public class Main {
             LSSimulatedAnnealingSearch(state, heuristic, steps, stiter, k, lambd, seed);
 
         }
-
-        System.out.println("Solucio Final:");
-        printSolution(state);
     }
 
 
@@ -160,11 +157,10 @@ public class Main {
             printActions(agent.getActions());
             System.out.println("PROPERTIES:");
             printInstrumentation(agent.getInstrumentation());
-            System.out.println("GOAL STATE:");
+            System.out.println("FINAL STATE:");
             System.out.println("_____________________________________________");
             LSState finalState = (LSState) search.getGoalState();
-            int [] vecGoalState = finalState.getTotalTimeServers();
-            for (int i = 0; i < vecGoalState.length; ++i) System.out.print(vecGoalState[i] + " ");
+            printSolution(finalState);
             System.out.println();
             System.out.println("_____________________________________________");
 

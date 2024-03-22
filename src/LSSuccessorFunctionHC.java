@@ -35,7 +35,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                         bestChoiceHCSwap = v;
                         BS = S;
                     }
-                    System.out.println("S VALUE FOR SWAP: " + S);
+                    //System.out.println("S VALUE FOR SWAP: " + S);
                     retVal.add(new Successor(S, newState));
                 }
             }
@@ -61,13 +61,13 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                         bestChoiceHCSwap = v;
                         BS = S;
                     }
-                    System.out.println("S VALUE FOR MOVE: " + S);
+                    //System.out.println("S VALUE FOR MOVE: " + S);
                     retVal.add(new Successor(S, newState2));
                 }
             }
         }
-        System.out.println("Absolute best option: " + bestChoiceHCSwap + " for " + BS);
-        System.out.println("END CHILD GENERATION");
+        //System.out.println("Absolute best option: " + bestChoiceHCSwap + " for " + BS);
+        //System.out.println("END CHILD GENERATION");
         return retVal;
     }
 }
