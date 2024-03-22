@@ -1,6 +1,7 @@
 import IA.DistFS.Requests;
 import IA.DistFS.Servers;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 
@@ -38,8 +39,8 @@ public class LSState {
 
     //Crear un nou estat clon d'un altre (per a aplicar operadors a partir d'aquest).
     public LSState(int[] actualTotalTimeServers, int[] actualServerRequests) {
-        totalTimeServers = actualTotalTimeServers;
-        serverRequests = actualServerRequests;
+        totalTimeServers = Arrays.copyOf(actualTotalTimeServers, actualTotalTimeServers.length);
+        serverRequests = Arrays.copyOf(actualServerRequests, actualServerRequests.length);
     }
 
 
