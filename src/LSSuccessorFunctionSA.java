@@ -31,7 +31,7 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
         //Nombre de moves possibles
         int number_of_moves = 0;
         for (int id_request = 0;  id_request < size; id_request++ )
-            number_of_moves += new_state.getServersOfRequest(id_request).size();
+            number_of_moves += new_state.getServersOfRequest(id_request).size() -1;
 
         //Llista de swaps possibles
         ArrayList<int[]> swaps = new ArrayList<>();
@@ -52,22 +52,24 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
         double probability_to_move = (double) number_of_moves / total_number_operators;
 
         //segons la probabilitat fem un move o un swap
-        if (probability_to_move <= Math.random()) {
+        double p = Math.random();
+        if (probability_to_move >= p) {
             //fem un MOVE random
-            int move_id = randomRandint(0, number_of_moves - 1);
+            int move_id = randomRandint(1, number_of_moves);
 
             int id_request = 0;
-            int total_moves = new_state.getServersOfRequest(id_request).size();
+            int total_moves = new_state.getServersOfRequest(id_request).size() -1;
             while(move_id > total_moves) {
-                id_request++;
-                total_moves += new_state.getServersOfRequest(id_request).size()-1;
+                id_request += 1;
+                total_moves += new_state.getServersOfRequest(id_request).size() -1;
             }
 
             // escollirem dels servers de id_request el total_moves - move_id
             int server_id_location = total_moves - move_id;
             List<Integer> possible_servers = new ArrayList<>(new_state.getServersOfRequest(id_request));
             int own_server = requests_servers[id_request];
-            possible_servers.remove(own_server);
+            //possible_servers.remove(own_server);
+            possible_servers.removeIf(s -> s==own_server);
             int id_server = possible_servers.get(server_id_location);
             new_state.moveRequest(id_request, id_server);
         }
