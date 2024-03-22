@@ -250,6 +250,35 @@ public class Main {
 
     }
 
+    // Coeficient de Variacio CV  com mes baix el valor millor, vol dir que els valors estan propers a la mitjana i balancejat tot
+    // es calcula dividint la desviacio estandard per la mitjana
+    public static double calculateCoefficientOfVariation(int[] totalServersTime) {
+
+        int sizeServers = totalServersTime.length;
+
+        // calcular mitjana
+        double sum = 0.0;
+        for (int value : totalServersTime) sum += value;
+
+        double mean = sum / sizeServers;
+
+        // Calcular la desviacio estandar
+        double variance = 0;
+        for (int time : totalServersTime) {
+            variance += Math.pow(time - mean, 2);
+        }
+        double standardDeviation = Math.sqrt(variance / sizeServers);
+
+        // Calcular el coeficient de variacio
+        double coefficientOfVariation = standardDeviation / mean;
+
+        // Nomes tenir 3 decimals
+        coefficientOfVariation = Math.round(coefficientOfVariation * 1000.0) / 1000.0;
+
+        return coefficientOfVariation;
+    }
+
+
     public static void printTotalTimeTransmissionAndMax(int[] totalTimeServers) {
         int totalTime = 0;
         int max = -1;
@@ -260,7 +289,7 @@ public class Main {
             }
         }
         System.out.println("\n\nTotal time transmission: " + totalTime);
-        System.out.println("\nTime of the slowest server (H1) " + max);
+        System.out.println("\nTime of the slowest server (H1 minimitza) " + max);
     }
 
     // Imprimeix l'estat solucio, els servidors amb el temps emplenat i cada request el servidor que va
@@ -273,6 +302,10 @@ public class Main {
         for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
 
         printTotalTimeTransmissionAndMax(totalTimeServers);
+
+        double CV = calculateCoefficientOfVariation(totalTimeServers);
+
+        System.out.println("\nCoeficient de Correlacio (H2 minimitza): " + CV);
 
         System.out.println("\n");
         int[] serverRequests = state.getServerRequests();
