@@ -250,12 +250,17 @@ public class Main {
 
     }
 
-    public static int totalTimeTransmission(int[] totalTimeServers) {
+    public static void printTotalTimeTransmissionAndMax(int[] totalTimeServers) {
         int totalTime = 0;
+        int max = -1;
         for (int time : totalTimeServers) {
             totalTime += time;
+            if (time > max) {
+                max = time;
+            }
         }
-        return totalTime;
+        System.out.println("\n\nTotal time transmission: " + totalTime);
+        System.out.println("\nTime of the slowest server (H1) " + max);
     }
 
     // Imprimeix l'estat solucio, els servidors amb el temps emplenat i cada request el servidor que va
@@ -267,7 +272,7 @@ public class Main {
 
         for (int i = 0; i < numServers; i++) System.out.print(totalTimeServers[i] + " ");
 
-        System.out.println("\n\nTotal time transmission: " + totalTimeTransmission(totalTimeServers));
+        printTotalTimeTransmissionAndMax(totalTimeServers);
 
         System.out.println("\n");
         int[] serverRequests = state.getServerRequests();
