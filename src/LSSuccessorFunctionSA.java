@@ -51,6 +51,10 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
         int total_number_operators = number_of_moves + swaps.size();
         double probability_to_move = (double) number_of_moves / total_number_operators;
 
+        String S  = "";
+        LSHeuristicFunction1 LSHF1 = new LSHeuristicFunction1(); // Heurístic 1
+        LSHeuristicFunction2 LSHF2 = new LSHeuristicFunction2(); // Heurístic 2
+
         //segons la probabilitat fem un move o un swap
         double p = Math.random();
         if (probability_to_move >= p) {
@@ -72,14 +76,24 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
             possible_servers.removeIf(s -> s==own_server);
             int id_server = possible_servers.get(server_id_location);
             new_state.moveRequest(id_request, id_server);
+
+            double    h1 = LSHF1.getHeuristicValue(new_state);
+            double    h2 = LSHF1.getHeuristicValue(new_state);
+            S = "MOVE r:" + id_request + " to server: " + id_server + " h1=" + h1 +  " h2=" + h2;
         }
         else {
             //SWAP a random request
             int[] id_request_pair = swaps.get(randomRandint(0, swaps.size()-1));
             new_state.swapRequests(id_request_pair[0], id_request_pair[1]);
+
+            double    h1 = LSHF1.getHeuristicValue(new_state);
+            double    h2 = LSHF1.getHeuristicValue(new_state);
+            S = "SWAP" + id_request_pair[0] + " <-> " + id_request_pair[1] + " h1=" + h1 +  " h2=" + h2;
         }
 
-        retVal.add(new Successor("", new_state));
+
+
+        retVal.add(new Successor(S, new_state));
         return retVal;
 
     }
