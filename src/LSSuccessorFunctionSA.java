@@ -1,10 +1,10 @@
-//import LSHeuristicFunction;
-
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
-import java.util.Random;
 
-import java.util.*;
+
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LSSuccessorFunctionSA implements SuccessorFunction {
@@ -21,7 +21,7 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
     public List getSuccessors(Object state){
 
         LSState original_state = (LSState) state;
-        ArrayList retVal = new ArrayList();
+        ArrayList<Successor> retVal = new ArrayList<>();
         LSState new_state = new LSState(original_state.getTotalTimeServers(), original_state.getServerRequests());
 
         int[] requests_servers = original_state.getServerRequests();
