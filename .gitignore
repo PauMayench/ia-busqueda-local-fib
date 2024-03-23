@@ -30,7 +30,7 @@ out
 
 #Python
 src/execution_outputs/
-src/__pycache__/
+src/experiments/__pycache__/
 /__pycache__
 */.pyc
 execution_outputs/

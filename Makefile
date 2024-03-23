@@ -24,6 +24,9 @@ run:
 pymain:
 	python3 src/main.py
 
+.PHONY: py
+py-%:
+	@python3 src/experiments/$*.py
 
 # Elimina todos los .class
 clean:
