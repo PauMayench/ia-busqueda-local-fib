@@ -22,11 +22,11 @@ run:
 
 # Per executar amb python
 pymain:
-	python3 src/main.py
+	python3 experiments/main.py
 
 .PHONY: py
 py-%:
-	@python3 src/experiments/$*.py
+	@python3 experiments/$*.py
 
 # Elimina todos los .class
 clean:
