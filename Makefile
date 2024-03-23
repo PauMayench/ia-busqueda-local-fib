@@ -24,6 +24,8 @@ run:
 pymain:
 	python3 experiments/main.py
 
+#amb aixo podem cridar qualsevol python que estigui a experiments amb: make py-{script_name}
+#exemple am exp1.py: make py-exp1
 .PHONY: py
 py-%:
 	@python3 experiments/$*.py
