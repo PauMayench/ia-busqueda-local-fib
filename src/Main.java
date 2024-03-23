@@ -156,16 +156,15 @@ public class Main {
             // Debugging lines:
             System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
 
-            System.out.println("ACTIONS:");
+
             printActions(agent.getActions());
-            System.out.println("PROPERTIES:");
             printInstrumentation(agent.getInstrumentation());
 
             LSState finalState = (LSState) search.getGoalState();
             printSolution(finalState, "FINAL STATE");
+
+
             System.out.println();
-
-
             System.out.println();
         } catch (Exception e) {
             System.out.println("error en hill climbing");
@@ -175,13 +174,25 @@ public class Main {
 
     private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd, int seed) {
         try {
+            System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
 
             Problem problem =  new Problem(initial_state,new LSSuccessorFunctionSA(seed), new LSGoalTest(), heuristicFunction);
-
-            SimulatedAnnealingSearch search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
-
+            Search search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
             //search.traceOn();
             SearchAgent agent = new SearchAgent(problem,search);
+
+            System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
+
+
+            printActions(agent.getActions());
+            printInstrumentation(agent.getInstrumentation());
+
+            LSState finalState = (LSState) search.getGoalState();
+            printSolution(finalState, "FINAL STATE");
+
+
+
+            System.out.println();
             System.out.println();
 
         } catch (Exception e) {
@@ -320,6 +331,7 @@ public class Main {
     }
 
     private static void printInstrumentation(Properties properties) {
+        System.out.println("PROPERTIES:");
         Iterator keys = properties.keySet().iterator();
 
         while(keys.hasNext()) {
@@ -331,6 +343,7 @@ public class Main {
     }
 
     private static void printActions(List actions) {
+        System.out.println("ACTIONS:");
         for(int i = 0; i < actions.size(); ++i) {
             String action = (String)actions.get(i);
             System.out.println(action);

@@ -1,14 +1,11 @@
-import IA.probTSP.ProbTSPBoard;
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.List;
 
 
 public class LSSuccessorFunctionHC implements SuccessorFunction {
-    @SuppressWarnings("unchecked")
     public ArrayList getSuccessors(Object aState) {
 
         ArrayList retVal = new ArrayList();  // llista que contindra tots els successors

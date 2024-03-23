@@ -2,7 +2,6 @@
 
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
-import aima.util.Pair;
 import java.util.Random;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
     public List getSuccessors(Object state){
 
         LSState original_state = (LSState) state;
-        ArrayList<Successor> retVal = new ArrayList<>();
+        ArrayList retVal = new ArrayList();
         LSState new_state = new LSState(original_state.getTotalTimeServers(), original_state.getServerRequests());
 
         int[] requests_servers = original_state.getServerRequests();
@@ -79,7 +78,7 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
 
             double    h1 = LSHF1.getHeuristicValue(new_state);
             double    h2 = LSHF1.getHeuristicValue(new_state);
-            S = "MOVE r:" + id_request + " to server: " + id_server + " h1=" + h1 +  " h2=" + h2;
+            S = "MOVE   r:" + id_request + " to server: " + id_server + "\t\t h1=" + h1 +  " h2=" + h2;
         }
         else {
             //SWAP a random request
@@ -88,7 +87,8 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
 
             double    h1 = LSHF1.getHeuristicValue(new_state);
             double    h2 = LSHF1.getHeuristicValue(new_state);
-            S = "SWAP" + id_request_pair[0] + " <-> " + id_request_pair[1] + " h1=" + h1 +  " h2=" + h2;
+
+            S = "SWAP   " + id_request_pair[0] + " <-> " + id_request_pair[1] + "\t\t h1=" + h1 +  " h2=" + h2;
         }
 
 
