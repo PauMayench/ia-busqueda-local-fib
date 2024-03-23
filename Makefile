@@ -9,7 +9,7 @@ all: compile
 JAVA_FILES := $(wildcard $(SRC_DIR)/*.java)
 
 compile: $(JAVA_FILES)
-	javac -d $(OUT_DIR) -cp $(LIBS) $^
+	javac -d $(OUT_DIR) -cp $(SRC_DIR):$(LIBS) $^
 
 #no toqueu del run fins despres de @ que sino no funciona el   	make run param1 param2 ...
 .PHONY: run
