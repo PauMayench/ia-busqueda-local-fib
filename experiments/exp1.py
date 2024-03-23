@@ -10,21 +10,15 @@ pool.add_HC("execution-g-h2", 200, 5, 50, 5, 123, 'G', 'h2')
 pool.add_SA('sa_output', 200, 5, 50, 5, 0, 'G', 'h2', 1000, 100, 5, 0.95, 33)
 
 
-
+make run 200 5 50 5 1 HC R h1
 '''
 
 pool = LSexecutionPool() 
 
+seeds = [1,2,3,4,5,6,7,8,9,10]
+for i, seed in enumerate(seeds): 
+    pool.add_HC(f"exp1-execucio-{i}", 200, 5, 50, 5, 0, 'R', 'h1', seed)
 
-pool.add_HC("execution-g-h2", 200, 5, 50, 5, 123, 'G', 'h2')
-
-pool.add_SA('sa_output', 200, 5, 50, 5, 0, 'G', 'h2', 1000, 100, 5, 0.95, 33)
-
-
-lambds = [0.1, 0.001, 0.0001]
-
-for lambd in lambds:
-    pool.add_SA(f'sa_output_lambd_{lambd}', 200, 5, 50, 5, 0, 'G', 'h2', 1000, 100, 5, lambd)
 
 
 pool.execute_parallel(8)

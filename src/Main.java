@@ -59,7 +59,7 @@ public class Main {
 
         if (args.length < 8) usage("must use 8 arguments at least", 2);
 
-        displayArgsInfo(args);
+        //displayArgsInfo(args);
 
         //Seed
         String seedARG = args[4];
@@ -110,7 +110,7 @@ public class Main {
         if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
         if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
 
-        printSolution(state, "INITIAL STATE"); // Initial Solution
+        //printSolution(state, "INITIAL STATE"); // Initial Solution
 
         //heuristic
         HeuristicFunction heuristic = new LSHeuristicFunction1();
@@ -148,24 +148,14 @@ public class Main {
 
     private static void LSHillClimbingSearch(LSState initial_state, HeuristicFunction heuristicFunction) {
         try {
-            System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
+            //System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
 
             Problem problem =  new Problem(initial_state, new LSSuccessorFunctionHC(), new LSGoalTest(), heuristicFunction);
             Search search =  new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem,search);
-            // Debugging lines:
-            System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
 
+            //printEndSearchInfo(agent, search);
 
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-
-            LSState finalState = (LSState) search.getGoalState();
-            printSolution(finalState, "FINAL STATE");
-
-
-            System.out.println();
-            System.out.println();
         } catch (Exception e) {
             System.out.println("error en hill climbing");
             e.printStackTrace();
@@ -174,26 +164,15 @@ public class Main {
 
     private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd, int seed) {
         try {
-            System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
+            //System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
 
             Problem problem =  new Problem(initial_state,new LSSuccessorFunctionSA(seed), new LSGoalTest(), heuristicFunction);
             Search search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
             //search.traceOn();
             SearchAgent agent = new SearchAgent(problem,search);
+            
+            //printEndSearchInfo(agent, search);
 
-            System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
-
-
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-
-            LSState finalState = (LSState) search.getGoalState();
-            printSolution(finalState, "FINAL STATE");
-
-
-
-            System.out.println();
-            System.out.println();
 
         } catch (Exception e) {
             System.out.println("error en simulated annealing");
@@ -251,13 +230,16 @@ public class Main {
                 maxKeyLength = arg.length();
             }
         }
+        System.out.println("\n___________________________________ CALL INFO __________________________________\n\n");
 
-        System.out.print("\nCALL INFO:\n\n");
         for (int i = 0; i < args.length; ++i) {
             String key = i < keys.length ? keys[i] : (i - keys.length < saKeys.length ? saKeys[i - keys.length] : "unknown");
             // Padding the parameter for alignment, switch positions of key and args[i]
             System.out.printf("%-" + (maxKeyLength + 3) + "s: %-20s [%d]\n", args[i], key, i);
         }
+
+                    System.out.println("________________________________________________________________________________\n");
+
         System.out.print("\n\n");
 
     }
@@ -351,6 +333,21 @@ public class Main {
 
     }
 
+    private static void printEndSearchInfo(SearchAgent agent, Search search){
+            System.out.println("____________________________________ SEARCH ENDED ____________________________________\n");
+
+
+            printActions(agent.getActions());
+            printInstrumentation(agent.getInstrumentation());
+
+            LSState finalState = (LSState) search.getGoalState();
+            printSolution(finalState, "FINAL STATE");
+
+
+
+            System.out.println();
+            System.out.println();
+    }
 }
 
 
