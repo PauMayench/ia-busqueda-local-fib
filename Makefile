@@ -14,7 +14,7 @@ compile: $(JAVA_FILES)
 #no toqueu del run fins despres de @ que sino no funciona el   	make run param1 param2 ...
 .PHONY: run
 run: ARGS = $(filter-out $@,$(MAKECMDGOALS))
-run: compile
+run: 
 	java -cp $(OUT_DIR):$(LIBS) Main $(ARGS)
 
 %:
