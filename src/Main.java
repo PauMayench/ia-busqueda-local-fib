@@ -14,7 +14,8 @@ import aima.search.informed.SimulatedAnnealingSearch;
 public class Main {
     static String SimulatedAnnealing = "SA";
     static String HillClimbing = "HC";
-
+    static boolean print_all_info = false;
+    
     private static void generateProblem(int seed, String[] args){
 
         int number_of_users = -1;                  //200
@@ -59,7 +60,7 @@ public class Main {
 
         if (args.length < 8) usage("must use 8 arguments at least", 2);
 
-        //displayArgsInfo(args);
+        if(print_all_info) displayArgsInfo(args);
 
         //Seed
         String seedARG = args[4];
@@ -148,13 +149,13 @@ public class Main {
 
     private static void LSHillClimbingSearch(LSState initial_state, HeuristicFunction heuristicFunction) {
         try {
-            //System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
+            if(print_all_info) System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
 
             Problem problem =  new Problem(initial_state, new LSSuccessorFunctionHC(), new LSGoalTest(), heuristicFunction);
             Search search =  new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem,search);
 
-            //printEndSearchInfo(agent, search);
+            if(print_all_info) printEndSearchInfo(agent, search);
 
         } catch (Exception e) {
             System.out.println("error en hill climbing");
@@ -164,14 +165,14 @@ public class Main {
 
     private static void LSSimulatedAnnealingSearch(LSState initial_state, HeuristicFunction heuristicFunction, int steps, int stiter, int k, double lambd, int seed) {
         try {
-            //System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
+            if(print_all_info) System.out.println("___________________________________ STARTING SEARCH __________________________________\n");
 
             Problem problem =  new Problem(initial_state,new LSSuccessorFunctionSA(seed), new LSGoalTest(), heuristicFunction);
             Search search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
             //search.traceOn();
             SearchAgent agent = new SearchAgent(problem,search);
             
-            //printEndSearchInfo(agent, search);
+            if(print_all_info) printEndSearchInfo(agent, search);
 
 
         } catch (Exception e) {

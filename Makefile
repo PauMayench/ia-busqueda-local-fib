@@ -1,3 +1,4 @@
+MAKEFLAGS += --no-print-directory
 SRC_DIR := ./src
 OUT_DIR := ./EXE
 LIB_DIR := ./lib
@@ -15,7 +16,7 @@ compile: $(JAVA_FILES)
 .PHONY: run
 run: ARGS = $(filter-out $@,$(MAKECMDGOALS))
 run: 
-	java -cp $(OUT_DIR):$(LIBS) Main $(ARGS)
+	@java -cp $(OUT_DIR):$(LIBS) Main $(ARGS)
 
 %:
 	@:
@@ -24,11 +25,18 @@ run:
 pymain:
 	python3 experiments/main.py
 
-#amb aixo podem cridar qualsevol python que estigui a experiments amb: make py-{script_name}
-#exemple am exp1.py: make py-exp1
-.PHONY: py
-py-%:
+#amb aixo podem cridar qualsevol python que estigui a experiments amb: make pye-{script_name}
+#exemple amb exp1.py: make pye-exp1
+.PHONY: pye
+pye-%:
 	@python3 experiments/$*.py
+
+#amb aixo podem cridar qualsevol python que estigui a experiments amb: make pyg-{script_name}
+#exemple amb exp1.py: make pyg-exp1
+.PHONY: pyg
+pyg-%:
+	@python3 plots/$*.py
+
 
 # Elimina todos los .class
 clean:

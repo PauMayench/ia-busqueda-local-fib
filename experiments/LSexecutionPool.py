@@ -55,10 +55,11 @@ class LSexecutionPool():
 
         name = ""
         if ask_folder_name:
-            name = input("Name of the new execution folder (press enter to leave blank):")
-        
-        folder_name = datetime.now().strftime("%Y-%m-%d_%H_%M") + (("_" + name) if name else "")
-
+            name = input("Name of the new execution folder (d-name to add the Y-m-H-M) (press enter to leave blank):")
+        if (name[0] == "d" and name[1] == "-") or not name:
+            folder_name = datetime.now().strftime("%Y-%m-%d_%H_%M") + (("_" + name[2::]) if name else "")
+        else:
+            folder_name = name
 
         full_folder_path = f"{self.execution_outputs_location}/execution_outputs/{folder_name}/"
         os.makedirs(full_folder_path, exist_ok=True) 
@@ -120,4 +121,16 @@ class LSexecutionPool():
         for p in active_processes:
             p.wait()
 
+        for exec in self.pendent_executions:
+            self.filter_output_file(exec[-1])
+
         print(f"\nAll the executions have finished, check the output files on the folder: {self.full_folder_path}")
+
+
+    def filter_output_file(self, output_file_path):
+        with open(output_file_path, 'r') as file:
+            lines = file.readlines()
+        with open(output_file_path, 'w') as file:
+            for line in lines:
+                if "make[" not in line:
+                    file.write(line)
