@@ -1,3 +1,4 @@
+import random
 from LSexecutionPool import LSexecutionPool
 
 '''
@@ -15,7 +16,13 @@ make run 200 5 50 5 1 HC R h1
 
 pool = LSexecutionPool() 
 
-seeds = [1,2,3,4,5,6,7,8,9,10]
+random.seed(42)
+
+
+n=10
+seeds = [random.randint(0, 1000) for _ in range(n)]
+
+
 for i, seed in enumerate(seeds): 
     pool.add_HC(f"exp1-execucio-{i}", 200, 5, 50, 5, 0, 'R', 'h1', seed)
 
