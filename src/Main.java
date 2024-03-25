@@ -88,7 +88,7 @@ public class Main {
         if(algorithmARG.equals("SA")) argsIndex = 12;
         if (args.length == argsIndex + 1) {
             try {
-                seed = Integer.parseInt(args[argsIndex]);
+                seedRandomAlg = Integer.parseInt(args[argsIndex]);
             } catch (NumberFormatException e) {
                 usage("args[8(HC) or 12(SA)] must be a number, it is: " + args[argsIndex], 2);
             }
@@ -109,7 +109,7 @@ public class Main {
         //initialize state
         LSState state = new LSState();
         if(intitial_algorithmARG.equals("G")) state.initializeGreedy();
-        if(intitial_algorithmARG.equals("R")) state.initializeRandom(seed);
+        if(intitial_algorithmARG.equals("R")) state.initializeRandom(seedRandomAlg);
 
         //printSolution(state, "INITIAL STATE"); // Initial Solution
 
@@ -156,6 +156,7 @@ public class Main {
             SearchAgent agent = new SearchAgent(problem,search);
 
             if(print_all_info) printEndSearchInfo(agent, search);
+            if(!print_all_info) printMaxServer(search);
 
         } catch (Exception e) {
             System.out.println("error en hill climbing");
@@ -171,7 +172,7 @@ public class Main {
             Search search =  new SimulatedAnnealingSearch(steps,stiter,k,lambd);
             //search.traceOn();
             SearchAgent agent = new SearchAgent(problem,search);
-            
+
             if(print_all_info) printEndSearchInfo(agent, search);
 
 
@@ -348,6 +349,23 @@ public class Main {
 
             System.out.println();
             System.out.println();
+    }
+
+    private static void printMaxServer(Search search){
+        LSState finalState = (LSState) search.getGoalState();
+        int[] totalTimeServers = finalState.getTotalTimeServers();
+        int totalTime = 0;
+        int max = -1;
+        for (int time : totalTimeServers) {
+            totalTime += time;
+            if (time > max) {
+                max = time;
+            }
+        }
+        //System.out.println("\n\nTotal time transmission: " + totalTime);
+        System.out.println("\nTime of the slowest server (H1 minimitza): " );
+        System.out.println(""+max);
+
     }
 }
 
