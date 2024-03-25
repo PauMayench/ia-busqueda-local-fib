@@ -21,16 +21,33 @@ def get_minims_folder_exp1(folder_name):
 
 
 
-execution_outputs = "execution_outputs/"
+execution_outputs = "execution_outputs_shared/exp1_v2/"
 moves = get_minims_folder_exp1(execution_outputs + "moves")
 swaps = get_minims_folder_exp1(execution_outputs + "swaps")
 moves_i_swaps = get_minims_folder_exp1(execution_outputs + "move_i_swap")
 
 
+# Bool per si es vol fer output dels operadors, per despres copiar-ho i enganxar-ho a R
+tstudent = True
 
+if (tstudent):
+    # Fer t-student al R:
+    # tenim els valors minims, dels swaps i moves_i_swaps
+    print(swaps)
+    print(moves_i_swaps)
 
-boxplot_values = [moves, swaps, moves_i_swaps]
+    # Obrir el R:
+    # swaps = c(46341, 46344,    )   # copiar el output
+    # swaps_moves = c(....)
 
-boxplot_labels = ["moves", "swaps", "moves_i_swaps"]
+    # Fer t-student
+    # result <- t.test(swaps, swaps_moves)
+    # print(result)
+
+# =======================
+
+boxplot_values = [ swaps, moves_i_swaps]
+
+boxplot_labels = [ "swaps", "moves_i_swaps"]
 
 box_plot(boxplot_values, boxplot_labels, "Operadors", "","temps servidor màxim")
