@@ -15,6 +15,9 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
 
         int numRequests = state.getNumRequests();
 
+
+        // Experiment sense swap:
+        /*
         // per tots els requests    fer Swap
         for (int r1 = 0; r1 < numRequests; r1++) {
 
@@ -33,6 +36,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                 }
             }
         }
+         */
 
 
         // per tots els requests      fer Move
@@ -56,7 +60,6 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                 }
             }
         }
-
 
         return retVal;
     }
