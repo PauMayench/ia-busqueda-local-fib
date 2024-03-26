@@ -23,9 +23,8 @@ pool = LSexecutionPool()
 random.seed(42)
 
 
-
-seedsProblema = [random.randint(0, 1000) for _ in range(10)]
-
+nSeedsProblema = 50
+seedsProblema = [random.randint(0, 1000) for _ in range(10, nSeedsProblema + 10)]
 
 for i, seedP in enumerate(seedsProblema): 
     

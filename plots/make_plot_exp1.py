@@ -12,16 +12,20 @@ def get_minims_folder_exp1(folder_name):
         all_lines_i = []
         for filename in os.listdir(folder_name):
             file_path = os.path.join(folder_name, filename)
-            if filename[-7] == str(i):
-                if os.path.isfile(file_path):
-                    lines = get_lines_from_file(file_path)  
-                    all_lines_i.append(lines[-1]) 
+            try:
+                if filename[-8:-7] == str(i):
+                    if os.path.isfile(file_path):
+                        lines = get_lines_from_file(file_path)  
+                        all_lines_i.append(lines[-1]) 
+            except:
+                pass
         minims.append(min(convert_to_ints(all_lines_i)))
     return minims
 
 
 
-execution_outputs = "execution_outputs_shared/exp1_v2/"
+#execution_outputs = "execution_outputs_shared/exp1_v2/"
+execution_outputs = "execution_outputs/"
 moves = get_minims_folder_exp1(execution_outputs + "moves")
 swaps = get_minims_folder_exp1(execution_outputs + "swaps")
 moves_i_swaps = get_minims_folder_exp1(execution_outputs + "move_i_swap")
