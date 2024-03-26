@@ -30,7 +30,7 @@ for i, seedP in enumerate(seedsProblema):
     
     seedsRandom = [random.randint(0, 1000) for _ in range(5)]
     for j, seedR in enumerate(seedsRandom):
-        pool.add_HC(f"exp1-execucio-{i}-{j}", 200, 5, 50, 5, seedP, 'R', 'h1', seedR)
+        pool.add_HC(f"exp1-execucio-{i + 10}-{j}", 200, 5, 50, 5, seedP, 'R', 'h1', seedR)
 
 
 
