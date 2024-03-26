@@ -20,15 +20,14 @@ random.seed(42)
 
 
 
-seedsProblema = [random.randint(0, 1000) for _ in range(10)]
+seedsProblema = [random.randint(0, 1000) for _ in range(50)]
 
 
 for i, seedP in enumerate(seedsProblema): 
-    random.seed(42)
     seedsRandom = [random.randint(0, 1000) for _ in range(5)]
     for j, seedR in enumerate(seedsRandom):
-        pool.add_HC(f"exp2-execucio-{i}-{j}", 200, 5, 50, 5, seedP, 'R', 'h1', seedR)
-    pool.add_HC(f"exp2-execucio-G-1", 200, 5, 50, 5, seedP, 'G', 'h1')
+        pool.add_HC(f"exp2-execucio-{i+10}-{j}", 200, 5, 50, 5, seedP, 'R', 'h1', seedR)
+    pool.add_HC(f"exp2-execucio-GG-{i + 10}", 200, 5, 50, 5, seedP, 'G', 'h1')
 
 
 

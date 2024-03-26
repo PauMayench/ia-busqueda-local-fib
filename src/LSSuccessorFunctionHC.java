@@ -34,9 +34,9 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
                 }
             }
         }
+    
 
-
-    /*
+    
         // per tots els requests      fer Move
         for (int r = 0; r < numRequests; r++) {
 
@@ -59,7 +59,7 @@ public class LSSuccessorFunctionHC implements SuccessorFunction {
             }
         }
 
-         */
+         
 
         return retVal;
     }

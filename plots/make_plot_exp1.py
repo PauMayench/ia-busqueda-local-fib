@@ -51,8 +51,8 @@ if (tstudent):
 
 # =======================
 
-boxplot_values = [ swaps, moves_i_swaps]
+boxplot_values = [moves, swaps, moves_i_swaps]
 
-boxplot_labels = [ "swaps", "moves_i_swaps"]
+boxplot_labels = ["moves", "swaps", "moves_i_swaps"]
 
 box_plot(boxplot_values, boxplot_labels, "Operadors", "","temps servidor màxim")
