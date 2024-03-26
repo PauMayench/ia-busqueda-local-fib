@@ -8,12 +8,13 @@ import os
 def get_minims_folder_exp1(folder_name):
     #exp1-execucio-9-2
     minims = []
-    for i in range(10):
+    nseeds = 50
+    for i in range(10, nseeds + 10):
         all_lines_i = []
         for filename in os.listdir(folder_name):
             file_path = os.path.join(folder_name, filename)
             try:
-                if filename[-8:-7] == str(i):
+                if filename[14:16] == str(i):
                     if os.path.isfile(file_path):
                         lines = get_lines_from_file(file_path)  
                         all_lines_i.append(lines[-1]) 
