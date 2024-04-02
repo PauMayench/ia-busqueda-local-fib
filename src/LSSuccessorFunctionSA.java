@@ -27,6 +27,18 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
         int[] requests_servers = original_state.getServerRequests();
         int size = requests_servers.length;
 
+        // print per l'exepriment:
+        int[] totalTimeServers = original_state.getTotalTimeServers();
+        int max = -1;
+        for (int time : totalTimeServers) {
+            if (time > max) {
+                max = time;
+            }
+        }
+        System.out.println(max);
+
+
+
         //Nombre de moves possibles
         int number_of_moves = 0;
         for (int id_request = 0;  id_request < size; id_request++ )
