@@ -71,7 +71,7 @@ class LSexecutionPool():
         output_path = self.full_folder_path + name_file
         output_path.replace(".", "_")
         
-        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'HC', initial_state, heuristic]
+        command = ['time','make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'HC', initial_state, heuristic]
         if random_seed:
             command.append(str(random_seed))
         command.append(output_path + ".out")
@@ -82,7 +82,7 @@ class LSexecutionPool():
         output_path = self.full_folder_path + name_file
         output_path.replace(".", "_")
 
-        command = ['make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'SA', initial_state, heuristic, str(steps), str(stiter), str(k), str(lambd)]
+        command = ['time','make', 'run'] + [str(number_of_users), str(max_number_files_user_can_request), str(number_servers), str(minimum_replications_per_file), str(seed), 'SA', initial_state, heuristic, str(steps), str(stiter), str(k), str(lambd)]
         
         if random_seed:
             command.append(str(random_seed))
@@ -99,8 +99,8 @@ class LSexecutionPool():
     def execute_parallel(self, n_processors_max=4):
 
         active_processes = []
-
-        for exec in self.pendent_executions:
+        l = len(self.pendent_executions)
+        for i, exec in enumerate(self.pendent_executions):
             if len(active_processes) >= n_processors_max:
 
                 while len(active_processes) >= n_processors_max:
@@ -112,9 +112,11 @@ class LSexecutionPool():
 
             try:
                 output_file_path = exec[-1]
-                with open(output_file_path, 'w') as output_file:
-                    p = subprocess.Popen(exec[0:-1], stdout=output_file, stderr=subprocess.STDOUT)
+                with open(output_file_path, 'a') as output_file:
+                    #p = subprocess.Popen(exec[0:-1], stdout=output_file, stderr=subprocess.STDOUT)
+                    p = subprocess.Popen(' '.join(exec[0:-1]), stdout=output_file, stderr=subprocess.STDOUT, shell=True)
                     active_processes.append(p)
+                    print(f'\rNow executing: {i+1}/{l}', end='')
             except Exception as e:
                 print(f"Some error occurred: {e}, please see the output file: {output_file_path}")
 

@@ -174,7 +174,7 @@ public class Main {
             SearchAgent agent = new SearchAgent(problem,search);
 
             if(print_all_info) printEndSearchInfo(agent, search);
-
+            if(!print_all_info) printMaxServer(search);
 
         } catch (Exception e) {
             System.out.println("error en simulated annealing");
@@ -362,9 +362,10 @@ public class Main {
                 max = time;
             }
         }
-        //System.out.println("\n\nTotal time transmission: " + totalTime);
-        System.out.println("\nTime of the slowest server (H1 minimitza): " );
-        System.out.println(""+max);
+        System.out.println("\n\nTotal time transmission: " );
+        System.out.println(""+totalTime);
+        //System.out.println("\nTime of the slowest server (H1 minimitza): " );
+        //System.out.println(""+max);
 
     }
 }

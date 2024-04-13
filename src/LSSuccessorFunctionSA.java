@@ -9,24 +9,26 @@ import java.util.List;
 
 public class LSSuccessorFunctionSA implements SuccessorFunction {
     private static Random random;
-
+    int countIterations;
     public LSSuccessorFunctionSA() {
+
         random = new Random();
     }
 
     public LSSuccessorFunctionSA(long seed) {
        random = new Random(seed);
+        countIterations = 0;
     }
 
     public List getSuccessors(Object state){
-
+        countIterations +=1;
         LSState original_state = (LSState) state;
         ArrayList<Successor> retVal = new ArrayList<>();
         LSState new_state = new LSState(original_state.getTotalTimeServers(), original_state.getServerRequests());
 
         int[] requests_servers = original_state.getServerRequests();
         int size = requests_servers.length;
-
+        /*
         // print per l'exepriment:
         int[] totalTimeServers = original_state.getTotalTimeServers();
         int max = -1;
@@ -35,8 +37,9 @@ public class LSSuccessorFunctionSA implements SuccessorFunction {
                 max = time;
             }
         }
-        System.out.println(max);
-
+        //if(countIterations%10 == 0)
+            System.out.println(max);
+        */
 
 
         //Nombre de moves possibles

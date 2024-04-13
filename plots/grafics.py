@@ -1,4 +1,8 @@
 import matplotlib.pyplot as plt
+import numpy as np
+#from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
 #fa un plot amb els nombres que li passes
 def line_plot(numbers_list, title="", name_x="", name_y=""):
@@ -11,7 +15,7 @@ def line_plot(numbers_list, title="", name_x="", name_y=""):
     plt.ylabel(name_y)
     plt.title(title)
 
-    plt.ylim(bottom=0) # fa que l'inici sigui 0
+    #plt.ylim(bottom=0) # fa que l'inici sigui 0
     #plt.xticks([])     # amaga els nombres de l'eix x
  
     plt.show()
@@ -62,3 +66,87 @@ def box_plot(list_lists, labels=None, title="", name_x="", name_y=""):
 #]
 #labels = ["Move", "Swap", "Move i Swap"]
 #box_plot(data_lists, labels, "Variances solucions segons operadors", "Operadors", "Cost")
+
+#-------------------------------------------------------------------
+def bar_3d(result):
+
+    result = np.array(result, dtype=np.int)
+    colors = ['r','b','g','y','b','p']
+    fig=plt.figure(figsize=(8, 8), dpi=250)
+    ax1=fig.add_subplot(111, projection='3d')
+    ax1.set_xlabel('k', labelpad=10)
+    ax1.set_ylabel('Lambda', labelpad=10)
+    ax1.set_zlabel('Cost (temps servidor pitjor)')
+
+
+    xlabels = np.array([10, 50, 500, 5000, 50000])
+    xpos = np.arange(xlabels.shape[0])
+    ylabels = np.array([0.0001, 0.001, 0.01, 0.1, 1])
+    ypos = np.arange(ylabels.shape[0])
+
+    xposM, yposM = np.meshgrid(xpos, ypos, copy=False)
+
+    zpos=result
+    zpos = zpos.ravel()
+
+    dx=0.5
+    dy=0.5
+    dz=zpos
+
+    ax1.w_xaxis.set_ticks(xpos + dx/2.)
+    ax1.w_xaxis.set_ticklabels(xlabels)
+
+    ax1.w_yaxis.set_ticks(ypos + dy/2.)
+    ax1.w_yaxis.set_ticklabels(ylabels)
+
+    values = np.linspace(0.2, 1., xposM.ravel().shape[0])
+    colors = cm.rainbow(values)
+    ax1.bar3d(xposM.ravel(), yposM.ravel(), dz*0, dx, dy, dz, color=colors)
+    plt.show()
+
+
+
+import matplotlib.pyplot as plt
+
+# Fa un bar plot amb els nombres que li passes
+def bar_plot(numbers_list,labels,  title="", name_x="", name_y=""):
+    
+    x_values = range(len(numbers_list))
+
+    plt.bar(x_values, numbers_list) # Això crea un bar plot
+
+    plt.xlabel(name_x)
+    plt.ylabel(name_y)
+    plt.title(title)
+
+    #plt.ylim(bottom=0) # fa que l'inici sigui 0
+    #plt.xticks()     # mostra els nombres de l'eix x
+    plt.xticks(x_values, labels)
+    plt.show()
+
+
+import matplotlib.pyplot as plt
+
+def line2_plot(numbers_list1, numbers_list2, title="", name_x="", name_y="", label1="Data 1", label2="Data 2"):
+    
+    x_values = range(len(numbers_list1))
+    x_values2 = range(len(numbers_list2))
+
+    # Ensure that both lists are plotted on the same x scale
+    max_length = max(len(numbers_list1), len(numbers_list2))
+    x_values = range(max_length)
+    if len(numbers_list1) < max_length:
+        numbers_list1 += [None] * (max_length - len(numbers_list1))
+    if len(numbers_list2) < max_length:
+        numbers_list2 += [None] * (max_length - len(numbers_list2))
+
+    plt.plot(x_values, numbers_list1, label=label1)  # You can specify marker='o' if needed
+    plt.plot(x_values, numbers_list2, label=label2)  # You can specify a different marker or linestyle
+
+    plt.xlabel(name_x)
+    plt.ylabel(name_y)
+    plt.title(title)
+    
+    plt.legend()
+
+    plt.show()
