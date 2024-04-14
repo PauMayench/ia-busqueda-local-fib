@@ -38,7 +38,7 @@ Per al Simulated Annealing (SA) es necessiten tambe els seguents parametres:
 	<lambda>:			El coeficient d'arrofredament de SA.
 
 
-Per a R (estrategia inicial Random) es opcional el ultim parametre:
+Per a R (estrategia inicial Random) es opcional l'ultim parametre:
     <seed_estrategia_random>: Seed per a l'algorisme de generacio inicial random.
 
 
@@ -56,11 +56,11 @@ time make run 200 5 50 5 1234 HC G h1 | grep -v "make" #per a ignorar missatges 
 
 Extra:
     Per a fer els experiments hem creat una classe de python per a puguer fer diferents execucions paraleles i controlar els fitxers d'outputs
-    A mes a la carpeta plots hi ha els codis per a llegir les dades i generar esl grafics dels diferents experiments
+    A mes a la carpeta plots hi ha els codis per a llegir les dades i generar els grafics dels diferents experiments
 
     Per a executar algun experiment s'ha de fer:
         make pye-{nom_script_sense_py}
-    Es demana el nom de la carpeta on generar-ho i aquest acarpeta es creara dins de execution outputs
+    Es demana el nom de la carpeta on generar-ho i aquesta carpeta es creara dins d'execution outputs
 
     Per a executar algun plot s'ha de fer:
         make pyg-{nom_script_sense_py}
