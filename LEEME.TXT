@@ -1,0 +1,68 @@
+ESTRUCTURA del projecte:
+en la carpeta root del projecte trobem els directoris:
+    EXE/ <- els executables java per a executar del projecte.
+    src/ <- fitxers src en java
+    lib/ <- AIMA.jar i DistributedFS.jar
+    experiments/ <- la classe de python i els scripts per a realitzar els experiments
+    plots/ <- els scripts de python per a llegir els outputs i generar els plots per a l'experimentacio
+    execution_outputs/ <- on van els fitxers generats si s'excuten els experiments amb la classe de python
+
+
+COM COMPILAR:
+    navega al directori root de projecte on es troba el Makefile
+    cd 
+    
+    make compile
+
+COM EXECUTAR:
+    navega al directori root de projecte on es troba el Makefile
+    cd 
+
+
+make run <nombre_usuaris> <max_requests_per_usuari> <nombre_servidors> <min_replicacions_fitxer> <seed> <algorisme> <estrategia_estat_inicial> <heuristic> [<steps> <stiter> <k> <lambda>] [<seed_estrategia_random>]
+on:
+	<nombre_usuaris>:			Nombre d'usuaris per a la generacio del problema.
+	<max_requests_per_usuari>:	El maxim nobre de fitxers que pot demanar un usuari per a la generacio del problema.
+	<nombre_servidors>:			El nombre de servidors per a la generacio del problema.
+	<min_replicacions_fitxer>:	El minim nombre de replicacions per fitxer en els servidors per a la generacio del problema.
+	<seed>:				        La seed per a la generacio del problema. 0 per a una random
+    <algorisme>:			    HC (Hill Climbing) o SA (Simulated Annealing)
+	<estrategia_estat_inicial>:	G (estrategia inicial Greedy) o R (estrategia inicial Random)
+	<heuristic>:			    h1 (Heuristic 1) o h2 (Heuristic 2)
+
+
+Per al Simulated Annealing (SA) es necessiten tambe els seguents parametres:
+	<steps>:			El nombre maxim de iteracions del SA.
+	<stiter>:			El nombre d'iteracions abans de decrementar temperatura en SA.
+	<k>:				El parametre k en el SA.
+	<lambda>:			El coeficient d'arrofredament de SA.
+
+
+Per a R (estrategia inicial Random) es opcional el ultim parametre:
+    <seed_estrategia_random>: Seed per a l'algorisme de generacio inicial random.
+
+
+EXEMPLES:
+per a 200 usuaris, max 5 requests per usuari, 50 servidors, minim 5 replicacions per fitxer, seed aleatoria
+
+make run 200 5 50 5 0 HC R h1
+make run 200 5 50 5 0 SA G h2 8000 1 50 0.1
+
+Experiment especial:
+time make run 200 5 50 5 1234 HC G h1 | grep -v "make" #per a ignorar missatges del make
+
+
+
+
+Extra:
+    Per a fer els experiments hem creat una classe de python per a puguer fer diferents execucions paraleles i controlar els fitxers d'outputs
+    A mes a la carpeta plots hi ha els codis per a llegir les dades i generar esl grafics dels diferents experiments
+
+    Per a executar algun experiment s'ha de fer:
+        make pye-{nom_script_sense_py}
+    Es demana el nom de la carpeta on generar-ho i aquest acarpeta es creara dins de execution outputs
+
+    Per a executar algun plot s'ha de fer:
+        make pyg-{nom_script_sense_py}
+
+    

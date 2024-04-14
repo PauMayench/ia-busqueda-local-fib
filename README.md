@@ -19,4 +19,3 @@ ts of files in one server, indicate which servers will send the file.
 The project is programmed in Java and uses implemented functions from AIMA jar, created by the teachers.
 
 
-
