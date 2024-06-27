@@ -7,7 +7,7 @@ Team members:
 - Pau Mayench
 
 
-The objective of this practice is to solve a problem of a Distributed File System using two local search algorithms.
+The objective of this project is to solve a problem of a Distributed File System using two local search algorithms.
 **Hill Climbing**
 **Simulated Annealing**
 - For a given set of reques
